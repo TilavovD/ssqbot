@@ -25,6 +25,7 @@ httptools = "*"
 geopy = "*"
 gevent = "*"
 django-redis = "*"
+uvloop = "*"
 
 [dev-packages]
 
