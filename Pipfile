@@ -24,6 +24,7 @@ uvicorn = "*"
 httptools = "*"
 geopy = "~=2.2.0"
 pillow = "*"
+django-redis = "*"
 
 [dev-packages]
 

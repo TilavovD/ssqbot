@@ -21,8 +21,10 @@ class User(CreateUpdateTracker):
     user_id = models.PositiveBigIntegerField(primary_key=True)  # telegram_id
     username = models.CharField(max_length=32, **nb)
     first_name = models.CharField(max_length=256)
+    full_name = models.CharField(max_length=256, null=True)
     last_name = models.CharField(max_length=256, **nb)
-    language_code = models.CharField(max_length=8, help_text="Telegram client's lang", **nb)
+    lang = models.CharField(max_length=8)
+    phone_number = models.CharField(max_length=13)
     deep_link = models.CharField(max_length=64, **nb)
 
     is_blocked_bot = models.BooleanField(default=False)
