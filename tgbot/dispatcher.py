@@ -51,6 +51,8 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.get_full_name),
             ],
             ENTER_PHONE_NUMBER: [
+                MessageHandler(Filters.text & ~Filters.command,
+                               untill_menu_handlers.get_phone_number_and_return_menu),
                 MessageHandler(Filters.contact,
                                untill_menu_handlers.get_phone_number_and_return_menu),
             ],

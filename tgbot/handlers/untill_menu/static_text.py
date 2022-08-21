@@ -12,8 +12,8 @@ RUSSIAN = "🇷🇺 Русский"
 name_enter_uz = "Ismingizni kiriting:"
 name_enter_ru = "Введите ваше имя:"
 
-number_enter_uz = "Telefon raqamingizni kiring:"
-number_enter_ru = "Введите ваше номер телефона:"
+number_enter_uz = "Pastdagi '{}' tugmasi orqali telefon raqamingizni jo'nating!"
+number_enter_ru = "Отправьте свой номер телефона с помощью кнопки  '{}'  ниже!"
 
 stay_anonymous_uz = "Anonim qoldirish"
 stay_anonymous_ru = "Оставить анонимно"
@@ -21,8 +21,11 @@ stay_anonymous_ru = "Оставить анонимно"
 welcome_text_menu_uz = "Menyuga xush kelibsiz!"
 welcome_text_menu_ru = "Добро пожаловать к меню!"
 
-share_number_uz = "Telefon raqamimni ulashish"
-share_number_ru = "Поделитесь моим номером телефона"
+share_number_uz = " 📱 Raqamimni ulashish "
+share_number_ru = " 📱 Поделиться контактом "
+
+error_number_uz = "Telefon raqat noto'g'ri kiritildi. Iltimos <+998991234567> formatda kiriting!"
+error_number_ru = "Номер телефона был введен неправильно. Пожалуйста, введите свой номер в формате <+998991234567>!"
 
 MENU_UZ = "Menyu"
 MENU_RU = "Меню"

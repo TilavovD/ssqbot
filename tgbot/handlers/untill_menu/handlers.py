@@ -4,7 +4,8 @@ from telegram.ext import CallbackContext, MessageHandler, ConversationHandler
 from . import static_text
 from tgbot.models import User
 from .keyboards import make_keyboard_for_language, make_keyboard_for_start_command_uz, make_keyboard_for_anonymous_ru, \
-    make_keyboard_for_anonymous_uz, make_keyboard_for_start_command_ru, send_contact_keyboard_uz, send_contact_keyboard_ru
+    make_keyboard_for_anonymous_uz, make_keyboard_for_start_command_ru, send_contact_keyboard_uz, \
+    send_contact_keyboard_ru
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU = range(3)
 
@@ -53,19 +54,50 @@ def get_full_name(update: Update, context: CallbackContext):
     name = update.message.text
     u.full_name = name
     u.save()
-    text = static_text.number_enter_uz
+    text = static_text.number_enter_uz.format(static_text.share_number_uz)
     keyboard = send_contact_keyboard_uz()
     if u.lang == "ru":
-        text = static_text.number_enter_ru
+        text = static_text.number_enter_ru.format(static_text.share_number_ru)
         keyboard = send_contact_keyboard_ru()
     update.message.reply_text(text, reply_markup=keyboard)
     return ENTER_PHONE_NUMBER
 
 
+# def get_phone_number_from_text_and_return_menu(update: Update, context: CallbackContext):
+#     u = User.get_user(update, context)
+#     number = update.message.text
+#     print(number[:4], len(number), number[3:])
+#     if number[:4] == "+9989" and len(number) == 13:
+#         try:
+#             _ = int(number[3:])
+#             u.phone_number = number
+#         except ValueError:
+#             pass
+
+
 def get_phone_number_and_return_menu(update: Update, context: CallbackContext):
     u = User.get_user(update, context)
-    number = update.message.contact.phone_number
-    u.phone_number = number
+    if update.message.text:
+        number = update.message.text
+        text = static_text.error_number_uz
+        if number[:5] == "+9989" and len(number) == 13:
+            try:
+                _ = int(number[5:])
+                u.phone_number = number
+            except ValueError:
+                if u.lang == 'ru':
+                    text = static_text.error_number_ru
+                update.message.reply_text(text)
+                return ENTER_PHONE_NUMBER
+        else:
+            if u.lang == 'ru':
+                text = static_text.error_number_ru
+            update.message.reply_text(text)
+            return ENTER_PHONE_NUMBER
+
+    elif update.message.contact:
+        number = update.message.contact.phone_number
+        u.phone_number = number
     u.save()
     text = static_text.welcome_text_menu_uz
     keyboard = make_keyboard_for_start_command_uz()
@@ -83,7 +115,7 @@ def menu(update: Update, context: CallbackContext):
     keyboard = make_keyboard_for_start_command_uz()
     if u.lang == "ru":
         text = static_text.welcome_text_menu_ru
-        keyboard = make_keyboard_for_anonymous_ru()
+        keyboard = make_keyboard_for_start_command_ru()
 
     update.message.reply_text(text, reply_markup=keyboard)
     return MENU
