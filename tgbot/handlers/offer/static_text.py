@@ -1,0 +1,11 @@
+BACK_UZ = "⬅️Ortga"
+BACK_RU = "⬅ Назад"
+
+MENU_UZ = "Menyuga qaytish"
+MENU_RU = "Вернуться в меню"
+
+give_offer_uz = "Taklifingizni kiriting"
+give_offer_ru = "Введите ваше предложение"
+
+offer_received_uz = "Taklifingiz qabul qilindi"
+offer_received_ru = "Ваше предложение принято"

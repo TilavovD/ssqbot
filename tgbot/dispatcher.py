@@ -27,8 +27,10 @@ from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCA
 from tgbot.handlers.broadcast_message.static_text import broadcast_command
 
 from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
+from tgbot.handlers.offer import handlers as offer_handlers
+from tgbot.handlers.offer import static_text as offer_static_text
 
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU = range(3)
+ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
 
 
 def setup_dispatcher(dp):
@@ -56,8 +58,35 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.contact,
                                untill_menu_handlers.get_phone_number_and_return_menu),
             ],
-            MENU: [],
+            MENU: [
+                MessageHandler(Filters.text(untill_menu_static_text.for_offers_uz),
+                               offer_handlers.offer_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.for_offers_ru),
+                               offer_handlers.offer_handler),
 
+            ],
+            OFFER: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                               offer_handlers.offer_receiver),
+            ],
+            OFFER_RECEIVE: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+            ]
 
         },
         fallbacks=[],

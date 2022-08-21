@@ -31,7 +31,7 @@ def command_start(update: Update, context: CallbackContext) -> int:
             reply_markup = make_keyboard_for_start_command_ru()
         update.message.reply_text(text=text,
                                   reply_markup=reply_markup)
-        return ConversationHandler.END
+        return MENU
 
 
 def language_choice(update: Update, context: CallbackContext) -> int:
@@ -54,10 +54,10 @@ def get_full_name(update: Update, context: CallbackContext):
     name = update.message.text
     u.full_name = name
     u.save()
-    text = static_text.number_enter_uz.format(static_text.share_number_uz)
+    text = static_text.number_enter_uz
     keyboard = send_contact_keyboard_uz()
     if u.lang == "ru":
-        text = static_text.number_enter_ru.format(static_text.share_number_ru)
+        text = static_text.number_enter_ru
         keyboard = send_contact_keyboard_ru()
     update.message.reply_text(text, reply_markup=keyboard)
     return ENTER_PHONE_NUMBER
@@ -77,12 +77,13 @@ def get_full_name(update: Update, context: CallbackContext):
 
 def get_phone_number_and_return_menu(update: Update, context: CallbackContext):
     u = User.get_user(update, context)
+    num_prefixes = ['99', '98', '97', '95', '94', '93', '91', '90', '88', '77', '33']
     if update.message.text:
         number = update.message.text
         text = static_text.error_number_uz
-        if number[:5] == "+9989" and len(number) == 13:
+        if number[:4] == "+998" and number[4:6] in num_prefixes and len(number) == 13:
             try:
-                _ = int(number[5:])
+                _ = int(number[1:])
                 u.phone_number = number
             except ValueError:
                 if u.lang == 'ru':
