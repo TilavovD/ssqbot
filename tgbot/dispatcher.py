@@ -42,6 +42,7 @@ def setup_dispatcher(dp):
             CommandHandler("start", untill_menu_handlers.command_start),
             MessageHandler(Filters.text(untill_menu_static_text.UZBEK), untill_menu_handlers.language_choice),
             MessageHandler(Filters.text(untill_menu_static_text.RUSSIAN), untill_menu_handlers.language_choice),
+
         ],
         states={
             ENTER_NAME: [
@@ -86,14 +87,18 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
                                untill_menu_handlers.menu),
+
             ]
 
         },
         fallbacks=[],
         allow_reentry=True
     )
-
+    # dp.add_handler(MessageHandler(Filters.text & ~Filters.command,
+    #                            offer_handlers.test),)
     dp.add_handler(conv_handler)
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command,
+                   offer_handlers.offer_answer_handler),)
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
