@@ -27,11 +27,15 @@ from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCA
 from tgbot.handlers.broadcast_message.static_text import broadcast_command
 
 from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
+from tgbot.handlers.untill_menu import static_text as untill_menu_static
 from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
 
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
+from tgbot.handlers.categories import handlers as category_handlers
+from tgbot.handlers.categories import static_text as category_static_text
 
+ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
+CONDITION, QUESTION = range(2)
 
 def setup_dispatcher(dp):
     """
@@ -93,7 +97,48 @@ def setup_dispatcher(dp):
         allow_reentry=True
     )
 
+    """A conversation handler for the categories app"""
+    category_conv_handler = ConversationHandler(
+        entry_points = [
+                MessageHandler(Filters.text(untill_menu_static.categories_uz),category_handlers.category),
+                MessageHandler(Filters.text(untill_menu_static.categories_uz), category_handlers.category),
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+
+                ],
+        states = {
+            CONDITION: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               category_handlers.category),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               category_handlers.category),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition)
+            ],
+            QUESTION: [
+                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.question)
+            ],
+
+        },
+        fallbacks=[],
+        allow_reentry=True
+    )
+
     dp.add_handler(conv_handler)
+    dp.add_handler(category_conv_handler)
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
