@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # local apps
     'tgbot.apps.TgbotConfig',
     'arcgis',
-    'offer',
+    'common',
 ]
 
 MIDDLEWARE = [

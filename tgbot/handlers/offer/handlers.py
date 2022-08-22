@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
-from offer.models import Offer
+from common.models import Offer
 from . import static_text
 from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru

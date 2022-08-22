@@ -64,7 +64,6 @@ def setup_dispatcher(dp):
                                offer_handlers.offer_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.for_offers_ru),
                                offer_handlers.offer_handler),
-
             ],
             OFFER: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
@@ -88,7 +87,7 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
                                untill_menu_handlers.menu),
 
-            ]
+            ],
 
         },
         fallbacks=[],
