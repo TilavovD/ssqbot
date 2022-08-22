@@ -35,7 +35,7 @@ from tgbot.handlers.categories import handlers as category_handlers
 from tgbot.handlers.categories import static_text as category_static_text
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
-CONDITION, QUESTION = range(2)
+CATEGORY, CONDITION = range(2)
 
 def setup_dispatcher(dp):
     """
@@ -102,34 +102,36 @@ def setup_dispatcher(dp):
         entry_points = [
                 MessageHandler(Filters.text(untill_menu_static.categories_uz),category_handlers.category),
                 MessageHandler(Filters.text(untill_menu_static.categories_uz), category_handlers.category),
-                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                MessageHandler(Filters.text(category_static_text.BACK_UZ),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                MessageHandler(Filters.text(category_static_text.BACK_RU),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
 
                 ],
         states = {
-            CONDITION: [
-                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+            CATEGORY: [
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.BACK_UZ),
                                category_handlers.category),
-                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                MessageHandler(Filters.text(category_static_text.BACK_RU),
                                category_handlers.category),
-                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition)
+
             ],
-            QUESTION: [
+            CONDITION: [
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
                 MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.question)
+                
             ],
 
         },
