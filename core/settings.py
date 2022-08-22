@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'tgbot.apps.TgbotConfig',
     'arcgis',
     'offer',
+    'categories',
 ]
 
 MIDDLEWARE = [

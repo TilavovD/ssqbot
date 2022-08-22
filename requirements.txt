@@ -24,6 +24,7 @@ dj-database-url==1.0.0
 # Telegram
 python-telegram-bot==13.13
 
-
+celery
+django-celery-beat
 
 geopy~=2.2.0
