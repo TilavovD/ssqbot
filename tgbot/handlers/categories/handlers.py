@@ -8,10 +8,6 @@ from .keyboards import (category_keyboard_uz, category_keyboard_ru,
 
 CONDITION, QUESTION = range(2)
 
-from categories.models import Category, Condition
-
-
-
 def category(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     text = CATEGORY_TEXT_UZ
@@ -39,8 +35,8 @@ def condition(update: Update, context: CallbackContext):
     update.message.reply_text(text, reply_markup=keyboard)
     return QUESTION
 
+
 def question(update: Update, context: CallbackContext):
-    data = update.message.text
     user = User.get_user(update, context)
-    update.message.reply_text(data)
+    update.message.reply_text("Soon this place will be updated.")
     return ConversationHandler.END

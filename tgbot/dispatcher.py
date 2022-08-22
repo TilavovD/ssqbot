@@ -10,7 +10,7 @@ from telegram import Bot, Update, BotCommand
 from telegram.ext import (
     Updater, Dispatcher, Filters,
     CommandHandler, MessageHandler,
-    CallbackQueryHandler, ConversationHandler,
+    ConversationHandler,
 )
 
 from core.celery import app  # event processing in async mode

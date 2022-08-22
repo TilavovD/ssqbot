@@ -1,5 +1,5 @@
 from telegram import ReplyKeyboardMarkup, KeyboardButton, Update
-from categories.models import Category, Condition, Question, Answer
+from categories.models import Category, Condition
 
 from .static_text import (BACK_RU, MENU_RU, BACK_UZ, MENU_UZ,
                             CATEGORY_TEXT_RU, CATEGORY_TEXT_UZ, CONDITION_TEXT_RU, CONDITION_TEXT_UZ)

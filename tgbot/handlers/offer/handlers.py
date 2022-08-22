@@ -1,8 +1,7 @@
 from telegram import Update
-from telegram.ext import CallbackContext, ConversationHandler
+from telegram.ext import CallbackContext
 
 from offer.models import Offer
-from tgbot.handlers import untill_menu
 from . import static_text
 from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru
