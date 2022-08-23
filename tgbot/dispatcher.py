@@ -38,7 +38,7 @@ from tgbot.handlers.anonymous_question import handlers as anonym_question_handle
 from tgbot.handlers.anonymous_question import static_text as anonym_question_static
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
-CATEGORY, CONDITION, QUESTION, ANSWER = range(4)
+CONDITION, QUESTION, ANSWER = range(3)
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
 
 def setup_dispatcher(dp):
@@ -105,21 +105,13 @@ def setup_dispatcher(dp):
     """A conversation handler for the categories app"""
     category_conv_handler = ConversationHandler(
         entry_points = [
-                # MessageHandler(Filters.text(category_static_text.BACK_UZ),
-                #                untill_menu_handlers.menu),
-                # MessageHandler(Filters.text(category_static_text.BACK_RU),
-                #                untill_menu_handlers.menu),
-                # MessageHandler(Filters.text(category_static_text.MENU_UZ),
-                #                untill_menu_handlers.menu),
-                # MessageHandler(Filters.text(category_static_text.MENU_RU),
-                #                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(untill_menu_static_text.categories_uz),category_handlers.category),
                 MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
                 
 
                 ],
         states = {
-            CATEGORY: [
+            CONDITION: [
                 MessageHandler(Filters.text(category_static_text.BACK_UZ),
                                 untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.BACK_RU),
@@ -131,15 +123,16 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
 
             ],
-            CONDITION: [
+            QUESTION: [
                 MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.category),
                 MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.category),
                 MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
+                CallbackQueryHandler(category_handlers.result_calculator, pattern=r"score-"),
                 
             ],
-            QUESTION: [
+            ANSWER: [
                 MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
@@ -202,6 +195,7 @@ def setup_dispatcher(dp):
     dp.add_handler(conv_handler)
     dp.add_handler(category_conv_handler)
     dp.add_handler(anonym_question_conv_handler)
+    
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
     # dp.add_handler(CommandHandler("stats", admin_handlers.stats))

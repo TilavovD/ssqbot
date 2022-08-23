@@ -10,7 +10,7 @@ from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU,
 from .keyboards import (category_keyboard_uz, category_keyboard_ru, 
                         condition_keyboard_uz, condition_keyboard_ru)
 
-CATEGORY, CONDITION, QUESTION, ANSWER, RESULT = range(5)
+CONDITION, QUESTION, ANSWER = range(3)
 
 
 
@@ -25,7 +25,7 @@ def category(update: Update, context: CallbackContext):
         keyboard = category_keyboard_ru()
     
     update.message.reply_text(text, reply_markup=keyboard)
-    return CATEGORY
+    return CONDITION
 
 
 
@@ -41,34 +41,50 @@ def condition(update: Update, context: CallbackContext):
         keyboard = condition_keyboard_ru(callback_data=data)
 
     update.message.reply_text(text, reply_markup=keyboard)
-    return CONDITION
+    return QUESTION
 
 result = 0
+
+def result_calculator(update: Update, context: CallbackContext):
+    chat_id = update.message.chat.id
+    query = update.callback_query
+    data = query.data[6:]
+    message = query.message.id
+
+    global result
+    result += int(data)
+    context.bot.delete_message(chat_id, message)
+    
+
+
 
 def question(update: Update, context: CallbackContext):
     """The Questions handler for the conditon chosen in the previous step"""
     data = update.message.text
     user = User.get_user(update, context)
+    questions = Question.objects.filter(condition__title_uz=data)
 
-    for question in Question.objects.filter(condition__title=data):
+    for question in questions:
         answers = Answer.objects.filter(question__id=question.id)
 
         if user.lang == "ru":
             keyboard = InlineKeyboardMarkup(
-                inline_keyboard=[[InlineKeyboardButton(text=answer.title_ru, callback_data=answer.score)] for answer in answers]
+                inline_keyboard=[[InlineKeyboardButton(text=answer.title_ru, callback_data="score-{answer.score}")] for answer in answers]
             )
             update.message.reply_text(text=question.title_ru, reply_markup=keyboard)
             continue
 
+        # else:
         keyboard = InlineKeyboardMarkup(
-                inline_keyboard = [[InlineKeyboardButton(text=answer.title_uz, callback_data=answer.score),] for answer in answers], 
-        )
+                    inline_keyboard = [[InlineKeyboardButton(text=answer.title_uz, callback_data="score-{answer.score}"),] for answer in answers], 
+            )
         update.message.reply_text(text=question.title_uz, reply_markup=keyboard)
 
-    
-    return QUESTION
+    return ANSWER
 
 
 
 def answer(update: Update, context: CallbackContext):
-    pass
+    update.message.reply_text(text=str(result))
+    return ConversationHandler.END
+    
