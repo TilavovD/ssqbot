@@ -30,6 +30,8 @@ from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
 from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
 
+from tgbot.handlers.cooperation import handlers as cooperation_handlers
+
 from tgbot.handlers.categories import static_text as category_static_text
 from tgbot.handlers.categories import handlers as category_handlers
 
@@ -37,7 +39,7 @@ from tgbot.handlers.categories import handlers as category_handlers
 from tgbot.handlers.anonymous_question import handlers as anonym_question_handlers
 from tgbot.handlers.anonymous_question import static_text as anonym_question_static
 
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
+ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, COOPERATION, COOPERATION_RECEIVE = range(7)
 CONDITION, QUESTION, ANSWER = range(3)
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
 
@@ -72,6 +74,10 @@ def setup_dispatcher(dp):
                                offer_handlers.offer_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.for_offers_ru),
                                offer_handlers.offer_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.for_cooperation_uz),
+                               cooperation_handlers.cooperation_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.for_cooperation_ru),
+                               cooperation_handlers.cooperation_handler),
 
             ],
             OFFER: [
@@ -87,6 +93,28 @@ def setup_dispatcher(dp):
                                offer_handlers.offer_receiver),
             ],
             OFFER_RECEIVE: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+            ],
+            COOPERATION: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                               cooperation_handlers.cooperation_receiver),
+            ],
+            COOPERATION_RECEIVE: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.BACK_RU),
@@ -193,7 +221,7 @@ def setup_dispatcher(dp):
     dp.add_handler(conv_handler)
     dp.add_handler(category_conv_handler)
     dp.add_handler(anonym_question_conv_handler)
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, offer_handlers.offer_answer_handler))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, offer_handlers.offer_and_cooperation_answer_handler))
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))

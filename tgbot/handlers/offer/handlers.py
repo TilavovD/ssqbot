@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
-from common.models import Offer
+from common.models import Offer, Cooperation
 from . import static_text
 from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru
@@ -40,11 +40,18 @@ def offer_receiver(update: Update, context: CallbackContext):
     return OFFER_RECEIVE
 
 
-def offer_answer_handler(update: Update, context: CallbackContext):
+def offer_and_cooperation_answer_handler(update: Update, context: CallbackContext):
     if update.message.reply_to_message and update.message.reply_to_message.chat.type == 'supergroup':
-        offer = Offer.objects.get(group_msg_id=update.message.reply_to_message.message_id)
-        text = f"Siz yuborgan {offer.group_msg_id} - sonli taklifingiz uchun javob:\n\n'{update.message.text}'"
-        context.bot.send_message(chat_id=offer.user.user_id, text=text)
-        offer.is_active = False
-        offer.save()
+
+        try:
+            object = Offer.objects.get(group_msg_id=update.message.reply_to_message.message_id)
+            text = f"Siz yuborgan {object.group_msg_id} - sonli taklifingiz uchun javob:\n\n'{update.message.text}'"
+
+        except:
+            object = Cooperation.objects.get(group_msg_id=update.message.reply_to_message.message_id)
+            text = f"Siz yuborgan {object.group_msg_id} - sonli xamkorlik xatingiz uchun javob:\n\n'{update.message.text}'"
+
+        context.bot.send_message(chat_id=object.user.user_id, text=text)
+        object.is_active = False
+        object.save()
 
