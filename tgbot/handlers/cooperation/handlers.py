@@ -26,13 +26,17 @@ def cooperation_receiver(update: Update, context: CallbackContext):
     cooperation_obj = Cooperation.objects.create(text=cooperation, user=u)
     text = static_text.cooperation_received_uz
     keyboard = make_keyboard_for_cooperation_uz()
+    cooperation_id_text = static_text.cooperation_id_uz
     if u.lang == "ru":
-        text = static_text.cooperation_received_ru
+        text = static_text.give_cooperation_letter_ru
         keyboard = make_keyboard_for_cooperation_ru()
+        cooperation_id_text = static_text.cooperation_id_ru
     update.message.reply_text(text, reply_markup=keyboard)
-    a = context.bot.forward_message(chat_id='-1001799210747', from_chat_id=update.message.chat_id,
-                                    message_id=update.message.message_id)
-    cooperation_obj.group_msg_id = a.message_id
-    update.message.reply_text("Xamkorlik xatingiz uchun id: {}".format(a.message_id))
+    context.bot.send_message(chat_id='-1001799210747', text="#xamkorlik_xati")
+    forward_message = context.bot.forward_message(chat_id='-1001799210747', from_chat_id=update.message.chat_id,
+                                                  message_id=update.message.message_id)
+    cooperation_obj.group_msg_id = forward_message.message_id
+
+    update.message.reply_text(cooperation_id_text.format(forward_message.message_id))
     cooperation_obj.save()
     return COOPERATION_RECEIVE

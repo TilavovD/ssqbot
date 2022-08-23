@@ -9,3 +9,9 @@ give_cooperation_letter_ru = "Здесь вы можете написать пи
 
 cooperation_received_uz = "Xamkorlik xati qabul qilindi"
 cooperation_received_ru = "Письмо о сотрудничестве получено"
+
+cooperation_id_uz = "Xamkorlik xatingiz uchun id: {}"
+cooperation_id_ru = "Идентификатор вашего письмо о сотрудничестве: {}"
+
+cooperation_answer_uz = "Siz yuborgan {} - sonli xamkorlik xatingiz uchun javob:\n\n'{}'"
+cooperation_answer_ru = "Ответ на ваше предложение о сотрудничестве № {}:\n\n'{}'"
