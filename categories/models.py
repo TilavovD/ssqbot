@@ -33,6 +33,7 @@ class Question(models.Model):
 class Answer(models.Model):
     title = models.CharField(max_length=256)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
+    score = models.IntegerField()
 
     def __str__(self) -> str:
         return self.title_uz
