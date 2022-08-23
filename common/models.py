@@ -22,3 +22,12 @@ class Cooperation(BaseClass):
 
 class Offer(BaseClass):
     pass
+
+
+class AnonymousQuestion(models.Model):
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    chat_id = models.IntegerField()
+
+    def __str__(self):
+        return self.text
