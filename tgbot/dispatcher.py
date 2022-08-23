@@ -100,8 +100,6 @@ def setup_dispatcher(dp):
     """A conversation handler for the categories app"""
     category_conv_handler = ConversationHandler(
         entry_points = [
-                MessageHandler(Filters.text(untill_menu_static.categories_uz),category_handlers.category),
-                MessageHandler(Filters.text(untill_menu_static.categories_uz), category_handlers.category),
                 MessageHandler(Filters.text(category_static_text.BACK_UZ),
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.BACK_RU),
@@ -110,11 +108,13 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(untill_menu_static.categories_uz),category_handlers.category),
+                MessageHandler(Filters.text(untill_menu_static.categories_uz), category_handlers.category),
+                
 
                 ],
         states = {
             CATEGORY: [
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.BACK_UZ),
                                category_handlers.category),
                 MessageHandler(Filters.text(category_static_text.BACK_RU),
@@ -123,20 +123,22 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
 
             ],
             CONDITION: [
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
                 MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
                 MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
                 
             ],
 
         },
         fallbacks=[],
-        allow_reentry=True
+        allow_reentry=True,
+        run_async=True
     )
 
     dp.add_handler(conv_handler)

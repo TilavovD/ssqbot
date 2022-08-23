@@ -1,4 +1,4 @@
-from telegram import Update, ReplyKeyboardRemove
+from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
 from tgbot.models import User
