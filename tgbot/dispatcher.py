@@ -10,7 +10,7 @@ from telegram import Bot, Update, BotCommand
 from telegram.ext import (
     Updater, Dispatcher, Filters,
     CommandHandler, MessageHandler,
-    ConversationHandler,
+    CallbackQueryHandler, ConversationHandler,
 )
 
 from core.celery import app  # event processing in async mode
@@ -27,15 +27,14 @@ from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCA
 from tgbot.handlers.broadcast_message.static_text import broadcast_command
 
 from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
-from tgbot.handlers.untill_menu import static_text as untill_menu_static
 from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
 
-from tgbot.handlers.categories import handlers as category_handlers
 from tgbot.handlers.categories import static_text as category_static_text
+from tgbot.handlers.categories import handlers as category_handlers
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
-CATEGORY, CONDITION = range(2)
+CATEGORY, CONDITION, QUESTION, ANSWER = range(4)
 
 def setup_dispatcher(dp):
     """
@@ -97,6 +96,7 @@ def setup_dispatcher(dp):
         allow_reentry=True
     )
 
+
     """A conversation handler for the categories app"""
     category_conv_handler = ConversationHandler(
         entry_points = [
@@ -108,10 +108,10 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(untill_menu_static.categories_uz),category_handlers.category),
-                MessageHandler(Filters.text(untill_menu_static.categories_uz), category_handlers.category),
+                MessageHandler(Filters.text(untill_menu_static_text.categories_uz),category_handlers.category),
+                MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
                 
-
+    
                 ],
         states = {
             CATEGORY: [
@@ -141,9 +141,9 @@ def setup_dispatcher(dp):
         run_async=True
     )
 
+
     dp.add_handler(conv_handler)
     dp.add_handler(category_conv_handler)
-
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
     # dp.add_handler(CommandHandler("stats", admin_handlers.stats))
