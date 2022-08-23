@@ -3,8 +3,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from tgbot.models import User
 from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU, 
-                        CONDITION_TEXT_RU, CONDITION_TEXT_UZ,
-                        BACK_UZ, BACK_RU, MENU_UZ, MENU_RU)
+                        CONDITION_TEXT_RU, CONDITION_TEXT_UZ)
 from .keyboards import (category_keyboard_uz, category_keyboard_ru, 
                         condition_keyboard_uz, condition_keyboard_ru)
 
