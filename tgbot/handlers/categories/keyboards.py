@@ -1,4 +1,4 @@
-from telegram import ReplyKeyboardMarkup, KeyboardButton, Update
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 from categories.models import Category, Condition
 
 from .static_text import (BACK_RU, MENU_RU, BACK_UZ, MENU_UZ,

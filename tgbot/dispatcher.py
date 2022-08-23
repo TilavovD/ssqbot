@@ -134,6 +134,14 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
                 
             ],
+            QUESTION: [
+                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.answer),
+            
+            ]
 
         },
         fallbacks=[],
