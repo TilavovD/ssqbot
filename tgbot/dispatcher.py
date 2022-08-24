@@ -29,8 +29,11 @@ from tgbot.handlers.broadcast_message.static_text import broadcast_command
 from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
 from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
+from tgbot.handlers.video_info import handlers as video_info_handlers
+from tgbot.handlers.video_info import static_text as video_info_text
 
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE = range(5)
+
+ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, VIDEO_INFO, EACH_DOCTOR = range(7)
 
 
 def setup_dispatcher(dp):
@@ -63,7 +66,12 @@ def setup_dispatcher(dp):
                                offer_handlers.offer_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.for_offers_ru),
                                offer_handlers.offer_handler),
-
+                
+                # video_info section
+                MessageHandler(Filters.text(untill_menu_static_text.video_info_uz),
+                                 video_info_handlers.video_info_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.video_info_ru),
+                                    video_info_handlers.video_info_handler),
             ],
             OFFER: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
@@ -86,8 +94,32 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
                                untill_menu_handlers.menu),
-            ]
-
+            ],
+            # video_info section
+            VIDEO_INFO: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                                video_info_handlers.handler_for_each_doctor),
+            ],
+            EACH_DOCTOR: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                                video_info_handlers.video_info_handler),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                                video_info_handlers.video_info_handler),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                                video_info_handlers.handler_for_each_doctor_youtube),
+            ],
         },
         fallbacks=[],
         allow_reentry=True
@@ -105,16 +137,16 @@ def setup_dispatcher(dp):
     # dp.add_handler(MessageHandler(Filters.location, location_handlers.location_handler))
     #
     # # secret level
-    # dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
+    dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
     #
     # # broadcast message
     # dp.add_handler(
     #     MessageHandler(Filters.regex(rf'^{broadcast_command}(/s)?.*'),
     #                    broadcast_handlers.broadcast_command_with_message)
     # )
-    # dp.add_handler(
-    #     CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler, pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
-    # )
+    dp.add_handler(
+        CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler, pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
+    )
     #
     # # files
     # dp.add_handler(MessageHandler(
