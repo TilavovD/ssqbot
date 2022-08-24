@@ -50,7 +50,9 @@ number_of_questions = 0
 
 
 def result_calculator(update: Update, context: CallbackContext):
-    print(context)
+    "A function that calculates the result and moves the conversation handler to the ANSWER point"
+    #This function is not returning ANSWER and not moving the conversation handler 
+    #This is the problem to be solved
     query = update.callback_query
     chat_id = query.message.chat.id
     data = query.data[6:]
