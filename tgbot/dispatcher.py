@@ -129,7 +129,7 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
-                CallbackQueryHandler(category_handlers.result_calculator, pattern=r"score-"),
+
                 
             ],
             ANSWER: [
@@ -194,6 +194,7 @@ def setup_dispatcher(dp):
 
     dp.add_handler(conv_handler)
     dp.add_handler(category_conv_handler)
+    dp.add_handler(CallbackQueryHandler(category_handlers.result_calculator, pattern=r"score-"),)
     dp.add_handler(anonym_question_conv_handler)
     
     # admin commands
