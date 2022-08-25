@@ -8,6 +8,10 @@ class DoctorTranslationOptions(TranslationOptions):
               'content',
               'gender',
               'youtube',
+              'telegram',
+              'instagram',
+              'facebook',
+              'twitter',
               )
 
 
