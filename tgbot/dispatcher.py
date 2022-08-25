@@ -262,10 +262,6 @@ def setup_dispatcher(dp):
 
     dp.add_handler(conv_handler)
     dp.add_handler(category_conv_handler)
-
-    dp.add_handler(video_info_conv_handler)
-    dp.add_handler(CallbackQueryHandler(category_handlers.result_calculator, pattern=r"score-"),)
-
     dp.add_handler(anonym_question_conv_handler)
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, offer_handlers.offer_and_cooperation_answer_handler))
 
