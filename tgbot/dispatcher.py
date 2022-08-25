@@ -29,11 +29,27 @@ from tgbot.handlers.broadcast_message.static_text import broadcast_command
 from tgbot.handlers.untill_menu import handlers as untill_menu_handlers
 from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
+
+from tgbot.handlers.cooperation import handlers as cooperation_handlers
+
+from tgbot.handlers.categories import static_text as category_static_text
+from tgbot.handlers.categories import handlers as category_handlers
+
+# Anonymous question tools
+from tgbot.handlers.anonymous_question import handlers as anonym_question_handlers
+from tgbot.handlers.anonymous_question import static_text as anonym_question_static
+# video info handler
 from tgbot.handlers.video_info import handlers as video_info_handlers
-from tgbot.handlers.video_info import static_text as video_info_text
+from tgbot.handlers.video_info import static_text as video_info_static_text
 
+ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, \
+COOPERATION, COOPERATION_RECEIVE = range(7)
 
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, VIDEO_INFO, EACH_DOCTOR = range(7)
+CONDITION, QUESTION, ANSWER = range(3)
+ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
+
+# video info section
+VIDEO_INFO, EACH_DOCTOR = range(2)
 
 
 def setup_dispatcher(dp):
@@ -66,12 +82,10 @@ def setup_dispatcher(dp):
                                offer_handlers.offer_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.for_offers_ru),
                                offer_handlers.offer_handler),
-                
-                # video_info section
-                MessageHandler(Filters.text(untill_menu_static_text.video_info_uz),
-                                 video_info_handlers.video_info_handler),
-                MessageHandler(Filters.text(untill_menu_static_text.video_info_ru),
-                                    video_info_handlers.video_info_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.for_cooperation_uz),
+                               cooperation_handlers.cooperation_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.for_cooperation_ru),
+                               cooperation_handlers.cooperation_handler),
             ],
             OFFER: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
@@ -95,23 +109,145 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
                                untill_menu_handlers.menu),
             ],
-            # video_info section
-            VIDEO_INFO: [
+            COOPERATION: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
-                                untill_menu_handlers.menu),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.BACK_RU),
-                                untill_menu_handlers.menu),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.MENU_UZ),
-                                untill_menu_handlers.menu),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
-                                untill_menu_handlers.menu),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command,
-                                video_info_handlers.handler_for_each_doctor),
+                               cooperation_handlers.cooperation_receiver),
+            ],
+            COOPERATION_RECEIVE: [
+                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(offer_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+            ],
+        },
+        fallbacks=[],
+        allow_reentry=True
+    )
+
+    """A conversation handler for the categories app"""
+    category_conv_handler = ConversationHandler(
+        entry_points=[
+            MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
+            MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
+
+        ],
+        states={
+            CONDITION: [
+                MessageHandler(Filters.text(category_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
+
+            ],
+            QUESTION: [
+                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.category),
+                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.category),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
+                CallbackQueryHandler(category_handlers.result_calculator, pattern=r"score-"),
+
+            ],
+            ANSWER: [
+                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
+                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, category_handlers.answer),
+
+            ]
+
+        },
+        fallbacks=[],
+        allow_reentry=True,
+        run_async=True
+    )
+
+    """A conversation handler for the anonymous question app"""
+    anonym_question_conv_handler = ConversationHandler(
+        entry_points=[
+            MessageHandler(Filters.text(untill_menu_static_text.anonymous_ask_uz),
+                           anonym_question_handlers.ask_anonym_question),
+            MessageHandler(Filters.text(untill_menu_static_text.anonymous_ask_ru),
+                           anonym_question_handlers.ask_anonym_question),
+            MessageHandler(Filters.text(anonym_question_static.BACK_UZ),
+                           untill_menu_handlers.menu),
+            MessageHandler(Filters.text(anonym_question_static.BACK_RU),
+                           untill_menu_handlers.menu),
+            MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+            MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+        ],
+
+        states={
+            ANONYM_QUESTION: [
+                MessageHandler(Filters.text(anonym_question_static.question_ask_uz),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.question_ask_ru),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.BACK_UZ),
+                               anonym_question_handlers.ask_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.BACK_RU),
+                               anonym_question_handlers.ask_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+            ],
+            ANONYM_QUESTION_RECIEVE: [
+                MessageHandler(Filters.text & ~Filters.command,
+                               anonym_question_handlers.question_reciever),
+                MessageHandler(Filters.text(anonym_question_static.BACK_UZ),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.BACK_RU),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+            ]
+        },
+        fallbacks=[],
+        allow_reentry=True,
+        run_async=True
+    )
+    
+    video_info_conv_handler = ConversationHandler(
+        entry_points=[
+            MessageHandler(Filters.text(untill_menu_static_text.video_info_uz),
+                            video_info_handlers.video_info_handler),
+            MessageHandler(Filters.text(untill_menu_static_text.video_info_ru),
+                            video_info_handlers.video_info_handler),    
+        ],
+        states={
+            VIDEO_INFO: [
+                MessageHandler(Filters.text(video_info_static_text.BACK_UZ),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.BACK_RU),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.MENU_UZ),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.MENU_RU),
+                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command, 
+                                video_info_handlers.handler_for_each_doctor),    
             ],
             EACH_DOCTOR: [
-                MessageHandler(Filters.text(offer_static_text.BACK_UZ),
+                MessageHandler(Filters.text(video_info_static_text.BACK_UZ),
                                 video_info_handlers.video_info_handler),
-                MessageHandler(Filters.text(offer_static_text.BACK_RU),
+                MessageHandler(Filters.text(video_info_static_text.BACK_RU),
                                 video_info_handlers.video_info_handler),
                 MessageHandler(Filters.text(offer_static_text.MENU_UZ),
                                 untill_menu_handlers.menu),
@@ -122,10 +258,15 @@ def setup_dispatcher(dp):
             ],
         },
         fallbacks=[],
-        allow_reentry=True
+        allow_reentry=True,
+        run_async=True
     )
 
     dp.add_handler(conv_handler)
+    dp.add_handler(category_conv_handler)
+    dp.add_handler(video_info_conv_handler)
+    dp.add_handler(anonym_question_conv_handler)
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, offer_handlers.offer_and_cooperation_answer_handler))
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
@@ -208,10 +349,10 @@ def process_telegram_event(update_json):
 def set_up_commands(bot_instance: Bot) -> None:
     langs_with_commands: Dict[str, Dict[str, str]] = {
         'en': {
-            'start': 'Start django bot 🚀',
-            'stats': 'Statistics of bot 📊',
-            'admin': 'Show admin info ℹ️',
-            'ask_location': 'Send location 📍',
+            'start': 'Yangilash 🚀',
+            'stats': 'Bot statistikasi 📊',
+            'admin': 'Admin haqida ma\'lumot ℹ️',
+            'ask_location': 'Manzil jo\'natish 📍',
             'broadcast': 'Broadcast message 📨',
             'export_users': 'Export users.csv 👥',
         },

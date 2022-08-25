@@ -5,6 +5,7 @@ import sys
 import dj_database_url
 import dotenv
 
+from django.utils.translation import gettext_lazy as _
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = ["*",]  # since Telegram uses a lot of IPs for webhooks
 
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,13 +45,16 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'debug_toolbar',
     
-    
 
     # local apps
     'tgbot.apps.TgbotConfig',
     'arcgis',
     'offer',
-    'about',
+    'about.apps.AboutConfig',
+    
+    # 'offer',
+    'categories',
+    'common',
 ]
 
 MIDDLEWARE = [
@@ -127,12 +132,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
+# modeltranslation settings
+LANGUAGES = (("ru", _("Russian")),
+            ('en', _('English')),
+            ('uz', _('Uzbek')))
+
+
+MODELTRANSLATION_LANGUAGES = ('ru','uz')
+MODELTRANSLATION_TRANSLATION_FILES = (
+    "categories.translation",
+    "about.translation",
+)
+MODELTRANSLATION_AUTO_POPULATE = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -25,6 +25,7 @@ httptools = "*"
 geopy = "~=2.2.0"
 pillow = "*"
 django-redis = "*"
+django-modeltranslation = "*"
 
 [dev-packages]
 
