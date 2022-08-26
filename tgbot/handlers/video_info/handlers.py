@@ -1,4 +1,3 @@
-from pydoc import doc
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 from tgbot.models import User

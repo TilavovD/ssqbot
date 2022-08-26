@@ -49,7 +49,6 @@ def offer_receiver(update: Update, context: CallbackContext):
 
 
 def offer_and_cooperation_answer_handler(update: Update, context: CallbackContext):
-    print(update.message)
     if update.message.reply_to_message and update.message.reply_to_message.from_user.is_bot:
 
         if update.message.reply_to_message.chat.id == int(offer_group_chat_id):
