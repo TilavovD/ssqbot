@@ -7,6 +7,7 @@ from tgbot.models import User
 from .keyboards import make_keyboard_for_cooperation_uz, make_keyboard_for_cooperation_ru
 
 COOPERATION, COOPERATION_RECEIVE = range(5, 7)
+cooperation_group_chat_id = "-1001799210747"
 
 
 def cooperation_handler(update: Update, context: CallbackContext):
@@ -32,8 +33,8 @@ def cooperation_receiver(update: Update, context: CallbackContext):
         keyboard = make_keyboard_for_cooperation_ru()
         cooperation_id_text = static_text.cooperation_id_ru
     update.message.reply_text(text, reply_markup=keyboard)
-    context.bot.send_message(chat_id='-1001799210747', text="#xamkorlik_xati")
-    forward_message = context.bot.forward_message(chat_id='-1001799210747', from_chat_id=update.message.chat_id,
+    context.bot.send_message(chat_id=cooperation_group_chat_id, text="#xamkorlik_xati")
+    forward_message = context.bot.forward_message(chat_id=cooperation_group_chat_id, from_chat_id=update.message.chat_id,
                                                   message_id=update.message.message_id)
     cooperation_obj.group_msg_id = forward_message.message_id
 
