@@ -1,23 +1,19 @@
-<<<<<<< HEAD
-from email import message
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CallbackContext 
-=======
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1
+
 from tgbot.models import User
 from about.models import Doctor
 from tgbot.handlers.about import keyboards
 from . import static_text
 
-<<<<<<< HEAD
-doctor_name = None
-ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(7,9)
-=======
-ABOUT, ABOUT_EACH_DOCTOR = range(7, 9)
 
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1
+ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(7,9)
+doctor_name = None
+
 
 def about_page_handler(update: Update, context: CallbackContext):
     doctors = Doctor.objects.all()
@@ -34,23 +30,42 @@ def about_page_handler(update: Update, context: CallbackContext):
             "Doktorlardan birini tanlang, shu doktor haqida ko'proq ma'lumot olish uchun",
             reply_markup=keyboard
         )
-<<<<<<< HEAD
+
     return ABOUT_DOCTOR
     
 def information_handler_for_each_doctor(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
+    global doctor_name
     try:
-        global doctor_name
         doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️","").replace("👩‍⚕️","")
-=======
-    return ABOUT
+    except IndexError:
+        return about_page_handler(update, context)
+    if user.lang == "uz":
+        try:
+            doctor = Doctor.objects.get(last_name_uz=doctor_name.title())
+            update.message.reply_text(
+                f"Siz {doctor.last_name_uz.title()}ni tanladingiz!",
+                reply_markup=keyboards.make_keyboard_for_each_doctor_info_button_uz()
+            )
+        except Doctor.DoesNotExist:
+            return about_page_handler(update, context)
+    
+    elif user.lang == "ru":
+        try:
+            doctor = Doctor.objects.get(last_name_ru=doctor_name.title())
+            update.message.reply_text(
+                f"Вы выбрали доктора {doctor.last_name_ru.title()}!",
+                reply_markup=keyboards.make_keyboard_for_each_doctor_info_button_ru()
+            )
+        except Doctor.DoesNotExist:
+            return about_page_handler(update, context)
 
+    return DOCTOR_INFO_AND_SOCIAL_BUTTON
 
 def handler_for_each_doctor(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     try:
         doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1
     except IndexError:
         return about_page_handler(update, context)
     if user.lang == "ru":
@@ -73,7 +88,6 @@ def handler_for_each_doctor(update: Update, context: CallbackContext):
             )
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-<<<<<<< HEAD
     
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
 
@@ -258,6 +272,3 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
             return about_page_handler(update, context)
     
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
-=======
-    return ABOUT
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1

@@ -33,10 +33,10 @@ def make_keyboard_for_about_page_ru(doctors) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
 
 
-<<<<<<< HEAD
+
 def make_keyboard_for_each_doctor_info_button_uz() -> ReplyKeyboardMarkup:
     buttons = [
-        ["Doktor haqida to'liq ma'lumot", ],
+        [static_text.full_information_button_uz, ],
         [static_text.BACK_UZ, static_text.MENU_UZ],
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
@@ -44,7 +44,7 @@ def make_keyboard_for_each_doctor_info_button_uz() -> ReplyKeyboardMarkup:
 
 def make_keyboard_for_each_doctor_info_button_ru() -> ReplyKeyboardMarkup:
     buttons = [
-        ["Полная информация о докторе", ],
+        [static_text.full_information_button_ru, ],
         [static_text.BACK_RU, static_text.MENU_RU],
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
@@ -66,7 +66,7 @@ def make_keyboard_for_doctor_info_and_social_ru():
         [static_text.BACK_RU, static_text.MENU_RU] 
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
-=======
+
 def make_keyboard_for_each_doctor_uz(doctor) -> InlineKeyboardMarkup:
     buttons = []
     if doctor.youtube_uz:
@@ -97,4 +97,3 @@ def make_keyboard_for_each_doctor_ru(doctor) -> InlineKeyboardMarkup:
         buttons.append([InlineKeyboardButton(text="Twitter", url=doctor.twitter_ru)])
 
     return InlineKeyboardMarkup(buttons)
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1

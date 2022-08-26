@@ -143,18 +143,17 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
             ],
             ABOUT_DOCTOR: [
-                MessageHandler(Filters.text & ~Filters.command,
-                                about_handlers.information_handler_for_each_doctor),
                 MessageHandler(Filters.text(about_static_text.BACK_UZ),
-                               about_handlers.about_page_handler),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text(about_static_text.BACK_RU),
-                               about_handlers.about_page_handler),
+                               untill_menu_handlers.menu),
                 MessageHandler(Filters.text(about_static_text.MENU_UZ),
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(about_static_text.MENU_RU),
                                untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                                about_handlers.information_handler_for_each_doctor),
             ],
-<<<<<<< HEAD
             DOCTOR_INFO_AND_SOCIAL_BUTTON: [
                 MessageHandler(Filters.text(about_static_text.BACK_UZ),
                                about_handlers.information_handler_for_each_doctor),
@@ -178,8 +177,7 @@ def setup_dispatcher(dp):
                                 about_handlers.doctor_info_and_social_account_handler),
 
             ],
-=======
->>>>>>> b586e042043f104c3ba899f3a6517f04f86092b1
+
         },
         fallbacks=[],
         allow_reentry=True
