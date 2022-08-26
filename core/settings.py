@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'about.apps.AboutConfig',
     
     # 'offer',
-=======
+# =======
     'about',
 # >>>>>>> origin
     'categories',
