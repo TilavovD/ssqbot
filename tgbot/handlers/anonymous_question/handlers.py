@@ -1,5 +1,6 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ConversationHandler
+import requests
 
 from tgbot.models import User
 from common.models import AnonymousQuestion
@@ -49,7 +50,7 @@ def question_reciever(update, context):
 
     question = update.message.text
     chat_id = update.message.chat_id
-    AnonymousQuestion.objects.create(text=question, chat_id=chat_id)
+    question = AnonymousQuestion.objects.create(text=question, chat_id=chat_id)
 
     update.message.reply_html(text, reply_markup=buttons)
     return ConversationHandler.END

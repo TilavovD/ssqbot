@@ -61,10 +61,10 @@ def offer_and_cooperation_answer_handler(update: Update, context: CallbackContex
                 text = static_text.offer_answer_ru
 
         except Offer.DoesNotExist:
-            obj = Cooperation.objects.get(group_msg_id=update.message.reply_to_message.message_id)
+            # obj = Cooperation.objects.get(group_msg_id=update.message.reply_to_message.message_id)
             text = cooperation_static_text.cooperation_answer_uz
-            if obj.user.lang == "ru":
-                text = cooperation_static_text.cooperation_answer_ru
+            # if obj.user.lang == "ru":
+            #     text = cooperation_static_text.cooperation_answer_ru
 
         if obj:
             context.bot.send_message(chat_id=obj.user.user_id, text=text.format(obj.group_msg_id, update.message.text))

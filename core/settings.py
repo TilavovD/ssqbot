@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     # local apps
     'tgbot.apps.TgbotConfig',
     'arcgis',
-    'offer',
+    # 'offer',
     'about.apps.AboutConfig',
     
     # 'offer',
@@ -183,6 +183,10 @@ if TELEGRAM_TOKEN is None:
     sys.exit(1)
 
 TELEGRAM_LOGS_CHAT_ID = os.getenv("TELEGRAM_LOGS_CHAT_ID", default=None)
+
+
+# -----> CHAT_ID
+CHAT_ID = os.getenv("CHAT_ID")
 
 # -----> SENTRY
 # import sentry_sdk

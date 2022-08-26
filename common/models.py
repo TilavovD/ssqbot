@@ -31,3 +31,14 @@ class AnonymousQuestion(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class QuestionAnswer(models.Model):
+    question = models.ForeignKey(AnonymousQuestion, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        if len(text) > 50:
+            return self.text[:50]
+        return self.text
