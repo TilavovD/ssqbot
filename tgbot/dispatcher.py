@@ -152,21 +152,6 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text & ~Filters.command,
                                about_handlers.handler_for_each_doctor),
             ],
-            ABOUT_EACH_DOCTOR: [
-                MessageHandler(Filters.text(about_static_text.doctor_socials_uz),
-                               about_handlers.handler_for_each_doctor_youtube),
-                MessageHandler(Filters.text(about_static_text.doctor_socials_ru),
-                               about_handlers.handler_for_each_doctor_youtube),
-                MessageHandler(Filters.text(video_info_static_text.BACK_UZ),
-                               about_handlers.about_page_handler),
-                MessageHandler(Filters.text(video_info_static_text.BACK_RU),
-                               about_handlers.about_page_handler),
-                MessageHandler(Filters.text(video_info_static_text.MENU_UZ),
-                               untill_menu_handlers.menu),
-                MessageHandler(Filters.text(video_info_static_text.MENU_RU),
-                               untill_menu_handlers.menu),
-
-            ],
         },
         fallbacks=[],
         allow_reentry=True
