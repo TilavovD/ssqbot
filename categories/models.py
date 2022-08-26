@@ -45,7 +45,7 @@ class Question(models.Model):
     condition = models.ForeignKey(Condition, on_delete=models.CASCADE, related_name="questions")
 
     def __str__(self) -> str:
-        return self.title_ru
+        return self.title_uz
     
     class Meta:
         verbose_name = "Question"
@@ -62,7 +62,7 @@ class Answer(models.Model):
     score = models.IntegerField()
 
     def __str__(self) -> str:
-        return self.title_ru
+        return self.title_uz
 
     class Meta:
         verbose_name = "Answer"
@@ -77,11 +77,12 @@ class Result(models.Model):
     
     """
     title = models.CharField(max_length=2048)
+    condition = models.ForeignKey(Condition, on_delete=models.CASCADE, related_name="results")
     min_score = models.IntegerField()
     max_score = models.IntegerField()
 
     def __str__(self) -> str:
-        return self.title
+        return self.title_uz
     
     class Meta:
         verbose_name = "Result"

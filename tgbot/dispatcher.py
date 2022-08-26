@@ -40,7 +40,7 @@ from tgbot.handlers.anonymous_question import handlers as anonym_question_handle
 from tgbot.handlers.anonymous_question import static_text as anonym_question_static
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, COOPERATION, COOPERATION_RECEIVE = range(7)
-CONDITION, QUESTION, ANSWER = range(3)
+CONDITION, QUESTION = range(2)
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
 
 
@@ -157,14 +157,6 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
             ],
-            ANSWER: [
-                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.condition),
-                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.condition),
-                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
-                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.answer),
-
-            ]
 
         },
         fallbacks=[],

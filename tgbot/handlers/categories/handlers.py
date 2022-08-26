@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, ConversationHandler
 from django.db.models import Q
 
-from categories.models import Question, Answer
+from categories.models import Question, Answer, Result
 from tgbot.handlers.categories.inline_keyboards import inline_keyboard
 from tgbot.models import User
 
@@ -11,9 +11,12 @@ from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU,
 from .keyboards import (category_keyboard_uz, category_keyboard_ru, 
                         condition_keyboard_uz, condition_keyboard_ru)
 
-CONDITION, QUESTION, ANSWER = range(3)
+CONDITION, QUESTION = range(2)
 
-
+results = 0
+clicks = 0
+number_of_questions = 0
+condition = ""
 
 def category(update: Update, context: CallbackContext):
     """Category handler"""
@@ -29,12 +32,12 @@ def category(update: Update, context: CallbackContext):
     return CONDITION
 
 
-
 def condition(update: Update, context: CallbackContext):
     """Condition Handler for the chosen category"""
     data = update.message.text
     user = User.get_user(update, context)
     text = CONDITION_TEXT_UZ
+    print(condition)
     keyboard = condition_keyboard_uz(callback_data=data)
 
     if user.lang == "ru":
@@ -44,34 +47,41 @@ def condition(update: Update, context: CallbackContext):
     update.message.reply_text(text, reply_markup=keyboard)
     return QUESTION
 
-result = 0
-clicks = 0
-number_of_questions = 0
-
 
 def result_calculator(update: Update, context: CallbackContext):
     "A function that calculates the result and moves the conversation handler to the ANSWER point"
-    #This function is not returning ANSWER and not moving the conversation handler 
-    #This is the problem to be solved
+    user = User.get_user(update, context)
     query = update.callback_query
     chat_id = query.message.chat.id
     data = query.data[6:]
+    subresult= int(data)
     message = query.message.message_id
-    global result
-    global clicks 
+    global results, clicks 
     clicks +=1
-    result += int(data)
+    results += subresult
     context.bot.delete_message(chat_id, message)
-    if clicks==number_of_questions:
-        return ANSWER
 
+    if clicks==number_of_questions:
+        text = ""
+        for result_object in Result.objects.filter(condition__title_uz=condition):
+            if results in range(result_object.min_score, result_object.max_score+1):
+
+                if user.lang == "ru":
+                    text = result_object.title_ru
+                
+                text = result_object.title_uz
+                context.bot.send_message(chat_id, text=f"{results}\n{text}")
+                return ConversationHandler.END
+        
     
 def question(update: Update, context: CallbackContext):
     """The Questions handler for the conditon chosen in the previous step"""
     data = update.message.text
-    global number_of_questions
+    global condition, number_of_questions
+    condition = data
     number_of_questions = Question.objects.filter(Q(condition__title_uz=data) | \
                             Q(condition__title_ru=data)).count()
+    
     user = User.get_user(update, context)
     if user.lang == "ru":
         questions = Question.objects.filter(condition__title_ru=data)
@@ -93,9 +103,3 @@ def question(update: Update, context: CallbackContext):
             update.message.reply_text(text=question.title_uz, reply_markup=keyboard)
             if update.callback_query is not None:
                 result_calculator(update, context)
-
-
-def answer(update: Update, context: CallbackContext):
-    update.message.reply_text(text=str(result))
-    return ConversationHandler.END
-    
