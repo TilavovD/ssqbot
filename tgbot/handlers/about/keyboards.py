@@ -3,7 +3,7 @@ from telegram import ReplyKeyboardMarkup
 from . import static_text
 
 
-def make_keyboard_for_video_info_uz(doctors) -> ReplyKeyboardMarkup:
+def make_keyboard_for_about_page_uz(doctors) -> ReplyKeyboardMarkup:
     buttons = []
     for index, doctor in enumerate(doctors):
         if index % 2 == 0:
@@ -18,7 +18,7 @@ def make_keyboard_for_video_info_uz(doctors) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
 
 
-def make_keyboard_for_video_info_ru(doctors) -> ReplyKeyboardMarkup:
+def make_keyboard_for_about_page_ru(doctors) -> ReplyKeyboardMarkup:
     buttons = []
     for index, doctor in enumerate(doctors):
         if index % 2 == 0:
@@ -35,7 +35,6 @@ def make_keyboard_for_video_info_ru(doctors) -> ReplyKeyboardMarkup:
 
 def make_keyboard_for_each_doctor_uz(doctor) -> ReplyKeyboardMarkup:
     buttons = [
-        [f"{doctor.last_name_uz.title()} {static_text.youtube_chanel_uz} 📺", ],
         [static_text.BACK_UZ, static_text.MENU_UZ],
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
@@ -43,7 +42,6 @@ def make_keyboard_for_each_doctor_uz(doctor) -> ReplyKeyboardMarkup:
 
 def make_keyboard_for_each_doctor_ru(doctor) -> ReplyKeyboardMarkup:
     buttons = [
-        [f"{static_text.youtube_chanel_ru} {doctor.last_name_ru.title()} 📺", ],
         [static_text.BACK_RU, static_text.MENU_RU],
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)

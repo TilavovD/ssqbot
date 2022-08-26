@@ -32,6 +32,9 @@ from tgbot.handlers.offer import static_text as offer_static_text
 
 from tgbot.handlers.cooperation import handlers as cooperation_handlers
 
+from tgbot.handlers.about import handlers as about_handlers
+from tgbot.handlers.about import static_text as about_static_text
+
 from tgbot.handlers.categories import static_text as category_static_text
 from tgbot.handlers.categories import handlers as category_handlers
 
@@ -43,7 +46,7 @@ from tgbot.handlers.video_info import handlers as video_info_handlers
 from tgbot.handlers.video_info import static_text as video_info_static_text
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, \
-COOPERATION, COOPERATION_RECEIVE = range(7)
+COOPERATION, COOPERATION_RECEIVE, ABOUT, ABOUT_EACH_DOCTOR = range(9)
 
 CONDITION, QUESTION, ANSWER = range(3)
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
@@ -86,6 +89,10 @@ def setup_dispatcher(dp):
                                cooperation_handlers.cooperation_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.for_cooperation_ru),
                                cooperation_handlers.cooperation_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.about_us_uz),
+                               about_handlers.about_page_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.about_us_ru),
+                               about_handlers.about_page_handler),
             ],
             OFFER: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
@@ -130,6 +137,33 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(offer_static_text.MENU_RU),
                                untill_menu_handlers.menu),
+            ],
+            ABOUT: [
+                MessageHandler(Filters.text(video_info_static_text.BACK_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.BACK_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                               about_handlers.handler_for_each_doctor),
+            ],
+            ABOUT_EACH_DOCTOR: [
+                MessageHandler(Filters.text(about_static_text.doctor_socials_uz),
+                               about_handlers.handler_for_each_doctor_youtube),
+                MessageHandler(Filters.text(about_static_text.doctor_socials_ru),
+                               about_handlers.handler_for_each_doctor_youtube),
+                MessageHandler(Filters.text(video_info_static_text.BACK_UZ),
+                               about_handlers.about_page_handler),
+                MessageHandler(Filters.text(video_info_static_text.BACK_RU),
+                               about_handlers.about_page_handler),
+                MessageHandler(Filters.text(video_info_static_text.MENU_UZ),
+                               untill_menu_handlers.menu),
+                MessageHandler(Filters.text(video_info_static_text.MENU_RU),
+                               untill_menu_handlers.menu),
+
             ],
         },
         fallbacks=[],

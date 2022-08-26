@@ -45,14 +45,7 @@ INSTALLED_APPS = [
     # local apps
     'tgbot',
     'arcgis',
-# <<<<<<< HEAD
-    # 'offer',
-    'about.apps.AboutConfig',
-    
-    # 'offer',
-# =======
     'about',
-# >>>>>>> origin
     'categories',
     'common',
 ]

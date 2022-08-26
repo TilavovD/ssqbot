@@ -59,21 +59,12 @@ def offer_and_cooperation_answer_handler(update: Update, context: CallbackContex
                 if obj.user.lang == "ru":
                     text = static_text.offer_answer_ru
 
-<<<<<<< HEAD
-        except Offer.DoesNotExist:
-            # obj = Cooperation.objects.get(group_msg_id=update.message.reply_to_message.message_id)
-            text = cooperation_static_text.cooperation_answer_uz
-            # if obj.user.lang == "ru":
-            #     text = cooperation_static_text.cooperation_answer_ru
-=======
         elif update.message.reply_to_message.chat.id == int(cooperation_group_chat_id):
             obj = Cooperation.objects.filter(group_msg_id=update.message.reply_to_message.message_id).first()
             if obj:
                 text = cooperation_static_text.cooperation_answer_uz
                 if obj.user.lang == "ru":
                     text = cooperation_static_text.cooperation_answer_ru
->>>>>>> origin
-
         if obj:
             context.bot.send_message(chat_id=obj.user.user_id, text=text.format(obj.group_msg_id, update.message.text))
             obj.is_active = False
