@@ -10,6 +10,8 @@ from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru
 
 OFFER, OFFER_RECEIVE = range(3, 5)
+offer_group_chat_id = "-1001799210747"
+cooperation_group_chat_id = "-1001799210747"
 
 
 def offer_handler(update: Update, context: CallbackContext):
@@ -35,8 +37,8 @@ def offer_receiver(update: Update, context: CallbackContext):
         keyboard = make_keyboard_for_offer_option_ru()
         offer_id_text = static_text.offer_id_ru
     update.message.reply_text(text, reply_markup=keyboard)
-    context.bot.send_message(chat_id='-1001799210747', text="#taklif")
-    forward_message = context.bot.forward_message(chat_id='-1001799210747', from_chat_id=update.message.chat_id,
+    context.bot.send_message(chat_id=offer_group_chat_id, text="#taklif")
+    forward_message = context.bot.forward_message(chat_id=offer_group_chat_id, from_chat_id=update.message.chat_id,
                                                   message_id=update.message.message_id)
     offer_obj.group_msg_id = forward_message.message_id
 
@@ -47,25 +49,22 @@ def offer_receiver(update: Update, context: CallbackContext):
 
 
 def offer_and_cooperation_answer_handler(update: Update, context: CallbackContext):
-    if update.message.reply_to_message \
-            and update.message.reply_to_message.chat.type == 'supergroup' \
-            and update.message.reply_to_message.text != "#xamkorlik_xati" \
-            and update.message.reply_to_message.text != "#taklif" and \
-            update.message.reply_to_message.from_user.is_bot:
-        obj = None
+    print(update.message)
+    if update.message.reply_to_message and update.message.reply_to_message.from_user.is_bot:
 
-        try:
-            obj = Offer.objects.get(group_msg_id=update.message.reply_to_message.message_id)
-            text = static_text.offer_answer_uz
-            if obj.user.lang == "ru":
-                text = static_text.offer_answer_ru
+        if update.message.reply_to_message.chat.id == int(offer_group_chat_id):
+            obj = Offer.objects.filter(group_msg_id=update.message.reply_to_message.message_id).first()
+            if obj:
+                text = static_text.offer_answer_uz
+                if obj.user.lang == "ru":
+                    text = static_text.offer_answer_ru
 
-        except Offer.DoesNotExist:
-            obj = Cooperation.objects.get(group_msg_id=update.message.reply_to_message.message_id)
-            text = cooperation_static_text.cooperation_answer_uz
-            if obj.user.lang == "ru":
-                text = cooperation_static_text.cooperation_answer_ru
-
+        elif update.message.reply_to_message.chat.id == int(cooperation_group_chat_id):
+            obj = Cooperation.objects.filter(group_msg_id=update.message.reply_to_message.message_id).first()
+            if obj:
+                text = cooperation_static_text.cooperation_answer_uz
+                if obj.user.lang == "ru":
+                    text = cooperation_static_text.cooperation_answer_ru
         if obj:
             context.bot.send_message(chat_id=obj.user.user_id, text=text.format(obj.group_msg_id, update.message.text))
             obj.is_active = False

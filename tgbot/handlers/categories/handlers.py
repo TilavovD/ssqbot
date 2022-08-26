@@ -6,9 +6,9 @@ from categories.models import Question, Answer, Result
 from tgbot.handlers.categories.inline_keyboards import inline_keyboard
 from tgbot.models import User
 
-from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU, 
-                        CONDITION_TEXT_RU, CONDITION_TEXT_UZ)
-from .keyboards import (category_keyboard_uz, category_keyboard_ru, 
+from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU,
+                          CONDITION_TEXT_RU, CONDITION_TEXT_UZ)
+from .keyboards import (category_keyboard_uz, category_keyboard_ru,
                         condition_keyboard_uz, condition_keyboard_ru)
 
 CONDITION, QUESTION = range(2)
@@ -17,6 +17,7 @@ results = 0
 clicks = 0
 number_of_questions = 0
 condition = ""
+
 
 def category(update: Update, context: CallbackContext):
     """Category handler"""
@@ -27,7 +28,7 @@ def category(update: Update, context: CallbackContext):
     if user.lang == "ru":
         text = CATEGORY_TEXT_RU
         keyboard = category_keyboard_ru()
-    
+
     update.message.reply_text(text, reply_markup=keyboard)
     return CONDITION
 
@@ -37,7 +38,7 @@ def condition(update: Update, context: CallbackContext):
     data = update.message.text
     user = User.get_user(update, context)
     text = CONDITION_TEXT_UZ
-    print(condition)
+    
     keyboard = condition_keyboard_uz(callback_data=data)
 
     if user.lang == "ru":
@@ -81,15 +82,15 @@ def question(update: Update, context: CallbackContext):
     condition = data
     number_of_questions = Question.objects.filter(Q(condition__title_uz=data) | \
                             Q(condition__title_ru=data)).count()
-    
+
     user = User.get_user(update, context)
     if user.lang == "ru":
         questions = Question.objects.filter(condition__title_ru=data)
         for question in questions:
             answers = Answer.objects.filter(question__id=question.id)
             keyboard = InlineKeyboardMarkup(
-                    inline_keyboard=[[InlineKeyboardButton(text=answer.title_ru, 
-                                callback_data="score-{answer.score}")] for answer in answers])
+                inline_keyboard=[[InlineKeyboardButton(text=answer.title_ru,
+                                                       callback_data="score-{answer.score}")] for answer in answers])
             update.message.reply_text(text=question.title_ru, reply_markup=keyboard)
             if update.callback_query is not None:
                 result_calculator(update, context)
@@ -98,8 +99,8 @@ def question(update: Update, context: CallbackContext):
         for question in questions:
             answers = Answer.objects.filter(question__id=question.id)
             keyboard = InlineKeyboardMarkup(
-                        inline_keyboard = [[InlineKeyboardButton(text=answer.title_uz, 
-                                    callback_data=f"score-{answer.score}"),] for answer in answers])
+                inline_keyboard=[[InlineKeyboardButton(text=answer.title_uz,
+                                                       callback_data=f"score-{answer.score}"), ] for answer in answers])
             update.message.reply_text(text=question.title_uz, reply_markup=keyboard)
             if update.callback_query is not None:
                 result_calculator(update, context)
