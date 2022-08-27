@@ -111,6 +111,8 @@ def doctor_info_and_social_account_handler(update: Update, context: CallbackCont
         else:
             return about_page_handler(update, context)
 
+    return DOCTOR_INFO_AND_SOCIAL_BUTTON
+
 def doctor_info_handler(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     if user.lang == "uz":
