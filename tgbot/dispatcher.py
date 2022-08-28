@@ -46,14 +46,11 @@ from tgbot.handlers.anonymous_question import static_text as anonym_question_sta
 from tgbot.handlers.video_info import handlers as video_info_handlers
 from tgbot.handlers.video_info import static_text as video_info_static_text
 
-
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, \
-COOPERATION, COOPERATION_RECEIVE, ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(9)
+    COOPERATION, COOPERATION_RECEIVE, ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(9)
 
-
-ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, COOPERATION, COOPERATION_RECEIVE = range(7)
 CONDITION, QUESTION = range(2)
-ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
+ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(3)
 
 # video info section
 VIDEO_INFO, EACH_DOCTOR = range(2)
@@ -152,7 +149,7 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(about_static_text.MENU_RU),
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command,
-                                about_handlers.information_handler_for_each_doctor),
+                               about_handlers.information_handler_for_each_doctor),
             ],
             DOCTOR_INFO_AND_SOCIAL_BUTTON: [
                 MessageHandler(Filters.text(about_static_text.BACK_UZ),
@@ -170,11 +167,11 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(about_static_text.doctor_social_network_accounts_list_button_ru),
                                about_handlers.doctor_social_account_handler),
                 MessageHandler(Filters.text(about_static_text.doctor_content_button_ru),
-                                about_handlers.doctor_info_handler),
+                               about_handlers.doctor_info_handler),
                 MessageHandler(Filters.text(about_static_text.full_information_button_uz),
-                                about_handlers.doctor_info_and_social_account_handler),
+                               about_handlers.doctor_info_and_social_account_handler),
                 MessageHandler(Filters.text(about_static_text.full_information_button_ru),
-                                about_handlers.doctor_info_and_social_account_handler),
+                               about_handlers.doctor_info_and_social_account_handler),
 
             ],
 
@@ -248,7 +245,16 @@ def setup_dispatcher(dp):
                 MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command,
                                anonym_question_handlers.question_reciever),
+            ],
+            ANONYM_QUESTION_RECIEVE_AFTER: [
+                MessageHandler(Filters.text(anonym_question_static.BACK_UZ),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.BACK_RU),
+                               anonym_question_handlers.send_anonym_question),
+                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
             ]
+
         },
         fallbacks=[],
         allow_reentry=True,
