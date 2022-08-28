@@ -1,17 +1,17 @@
-import traceback
-
 from telegram import Update
-from telegram.ext import CallbackContext, ConversationHandler
+from telegram.ext import CallbackContext
 
-from common.models import Offer, Cooperation
+from common.models import Offer, Cooperation, AnonymousQuestion
 from . import static_text
 from tgbot.handlers.cooperation import static_text as cooperation_static_text
+from tgbot.handlers.anonymous_question import static_text as question_static_text
 from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru
 
 OFFER, OFFER_RECEIVE = range(3, 5)
 offer_group_chat_id = "-1001799210747"
 cooperation_group_chat_id = "-1001799210747"
+question_group_chat_id = "-1001799210747"
 
 
 def offer_handler(update: Update, context: CallbackContext):
@@ -33,7 +33,7 @@ def offer_receiver(update: Update, context: CallbackContext):
     keyboard = make_keyboard_for_offer_option_uz()
     offer_id_text = static_text.offer_id_uz
     if u.lang == "ru":
-        text = static_text.give_offer_ru
+        text = static_text.offer_received_uz
         keyboard = make_keyboard_for_offer_option_ru()
         offer_id_text = static_text.offer_id_ru
     update.message.reply_text(text, reply_markup=keyboard)
@@ -64,7 +64,15 @@ def offer_and_cooperation_answer_handler(update: Update, context: CallbackContex
                 text = cooperation_static_text.cooperation_answer_uz
                 if obj.user.lang == "ru":
                     text = cooperation_static_text.cooperation_answer_ru
+
+        elif update.message.reply_to_message.chat.id == int(question_group_chat_id):
+            obj = AnonymousQuestion.objects.filter(group_msg_id=update.message.reply_to_message.message_id).first()
+            if obj:
+                text = question_static_text.question_answer_uz
+                if obj.user.lang == "ru":
+                    text = question_static_text.question_answer_ru
         if obj:
             context.bot.send_message(chat_id=obj.user.user_id, text=text.format(obj.group_msg_id, update.message.text))
             obj.is_active = False
+            obj.answer = update.message.text
             obj.save()

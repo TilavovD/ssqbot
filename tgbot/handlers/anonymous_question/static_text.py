@@ -26,3 +26,9 @@ requlations_ru = '1. Правила #1 qwertyuiopasdfghjklzxcvbnm\
     \n2. Правила #2 qwertyuiopasdfghjklzxcvbnm\
     \n3. Правила #3 qwertyuiopasdfghjklzxcvbnmn\
     \n4. Правила #4 qwertyuiopasdfghjklzxcvbnm'
+
+question_id_uz = "Savolingiz uchun id: {}"
+question_id_ru = "Идентификатор вашего вопроса: {}"
+
+question_answer_uz = "Siz yuborgan {} - sonli savolingiz uchun javob:\n\n'{}'"
+question_answer_ru = "Ответ на ваш вопрос № {}:\n\n'{}'"

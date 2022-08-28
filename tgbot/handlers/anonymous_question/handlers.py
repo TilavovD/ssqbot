@@ -7,7 +7,9 @@ from common.models import AnonymousQuestion
 from . import static_text
 from . import keyboards
 
-ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE = range(2)
+ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(3)
+
+question_group_chat_id = "-1001799210747"
 
 
 def ask_anonym_question(update, context):
@@ -40,17 +42,23 @@ def send_anonym_question(update, context):
 
 def question_reciever(update, context):
     '''Handle recieved question'''
-    user = User.get_user(update, context)
-    buttons = keyboards.make_keyboard_for_question_recieved_uz()
-    text = static_text.question_received_uz
-
-    if user.lang == 'ru':
-        buttons = keyboards.make_keyboard_for_question_recieved_ru()
-        text = static_text.question_received_ru
-
+    u = User.get_user(update, context)
     question = update.message.text
-    chat_id = update.message.chat_id
-    question = AnonymousQuestion.objects.create(text=question, chat_id=chat_id)
+    question_obj = AnonymousQuestion.objects.create(text=question, user=u)
+    text = static_text.question_received_uz
+    keyboard = keyboards.make_keyboard_for_question_recieved_uz()
+    question_id_text = static_text.question_id_uz
+    if u.lang == "ru":
+        text = static_text.question_received_ru
+        keyboard = keyboards.make_keyboard_for_question_recieved_ru()
+        offer_id_text = static_text.question_id_ru
+    update.message.reply_text(text, reply_markup=keyboard)
+    context.bot.send_message(chat_id=question_group_chat_id, text="#savol")
+    forward_message = context.bot.forward_message(chat_id=question_group_chat_id, from_chat_id=update.message.chat_id,
+                                                  message_id=update.message.message_id)
+    question_obj.group_msg_id = forward_message.message_id
 
-    update.message.reply_html(text, reply_markup=buttons)
-    return ConversationHandler.END
+    update.message.reply_text(question_id_text.format(forward_message.message_id))
+
+    question_obj.save()
+    return ANONYM_QUESTION_RECIEVE_AFTER
