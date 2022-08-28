@@ -3,7 +3,7 @@ from django.db import models
 from tgbot.models import User
 
 
-class BaseClass(models.Model):
+class BaseModel(models.Model):
     text = models.TextField()
 
     is_active = models.BooleanField(default=True)
@@ -16,30 +16,13 @@ class BaseClass(models.Model):
         return f'{self.user.username} -> {self.text[:20]}'
 
 
-class Cooperation(BaseClass):
+class Cooperation(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cooperations')
 
 
-class Offer(BaseClass):
+class Offer(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')
 
 
-
-class AnonymousQuestion(models.Model):
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    chat_id = models.IntegerField()
-
-    def __str__(self):
-        return self.text
-
-
-class QuestionAnswer(models.Model):
-    question = models.ForeignKey(AnonymousQuestion, on_delete=models.CASCADE)
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        if len(self.text) > 50:
-            return self.text[:50]
-        return self.text
+class AnonymousQuestion(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
