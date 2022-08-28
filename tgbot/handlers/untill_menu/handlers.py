@@ -63,18 +63,6 @@ def get_full_name(update: Update, context: CallbackContext):
     return ENTER_PHONE_NUMBER
 
 
-# def get_phone_number_from_text_and_return_menu(update: Update, context: CallbackContext):
-#     u = User.get_user(update, context)
-#     number = update.message.text
-#     print(number[:4], len(number), number[3:])
-#     if number[:4] == "+9989" and len(number) == 13:
-#         try:
-#             _ = int(number[3:])
-#             u.phone_number = number
-#         except ValueError:
-#             pass
-
-
 def get_phone_number_and_return_menu(update: Update, context: CallbackContext):
     u = User.get_user(update, context)
     num_prefixes = ['99', '98', '97', '95', '94', '93', '91', '90', '88', '77', '33']

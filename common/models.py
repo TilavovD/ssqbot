@@ -5,23 +5,24 @@ from tgbot.models import User
 
 class BaseClass(models.Model):
     text = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')
 
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)
 
     group_msg_id = models.IntegerField(default=0)
+    answer = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username} -> {self.text[:20]}'
 
 
 class Cooperation(BaseClass):
-    pass
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cooperations')
 
 
 class Offer(BaseClass):
-    pass
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')
+
 
 
 class AnonymousQuestion(models.Model):
@@ -39,6 +40,6 @@ class QuestionAnswer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        if len(text) > 50:
+        if len(self.text) > 50:
             return self.text[:50]
         return self.text
