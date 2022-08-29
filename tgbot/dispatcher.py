@@ -31,6 +31,7 @@ from tgbot.handlers.offer import handlers as offer_handlers
 from tgbot.handlers.offer import static_text as offer_static_text
 
 from tgbot.handlers.cooperation import handlers as cooperation_handlers
+from tgbot.handlers.tg_channel import handlers as tg_channel_handlers
 
 # about us
 from tgbot.handlers.about import handlers as about_handlers
@@ -94,6 +95,10 @@ def setup_dispatcher(dp):
                                about_handlers.about_page_handler),
                 MessageHandler(Filters.text(untill_menu_static_text.about_us_ru),
                                about_handlers.about_page_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.telegram_channel_uz),
+                               tg_channel_handlers.tg_channel_handler),
+                MessageHandler(Filters.text(untill_menu_static_text.telegram_channel_ru),
+                               tg_channel_handlers.tg_channel_handler),
             ],
             OFFER: [
                 MessageHandler(Filters.text(offer_static_text.BACK_UZ),
@@ -184,7 +189,7 @@ def setup_dispatcher(dp):
     category_conv_handler = ConversationHandler(
         entry_points=[
             MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
-            MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
+            MessageHandler(Filters.text(untill_menu_static_text.categories_ru), category_handlers.category),
 
         ],
         states={

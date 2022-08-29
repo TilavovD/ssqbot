@@ -13,7 +13,7 @@ def make_keyboard_for_offer_option_uz() -> ReplyKeyboardMarkup:
 
 def make_keyboard_for_offer_option_ru() -> ReplyKeyboardMarkup:
     buttons = [
-        [static_text.BACK_UZ],
-        [static_text.MENU_UZ],
+        [static_text.BACK_RU],
+        [static_text.MENU_RU],
     ]
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)

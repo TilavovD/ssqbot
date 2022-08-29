@@ -1,17 +1,12 @@
-
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
-from telegram.ext import CallbackContext 
-
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
-from tgbot.models import User
 from about.models import Doctor
 from tgbot.handlers.about import keyboards
+from tgbot.models import User
 from . import static_text
 
-
-ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(7,9)
+ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(7, 9)
 doctor_name = None
 
 
@@ -32,12 +27,13 @@ def about_page_handler(update: Update, context: CallbackContext):
         )
 
     return ABOUT_DOCTOR
-    
+
+
 def information_handler_for_each_doctor(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     global doctor_name
     try:
-        doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️","").replace("👩‍⚕️","")
+        doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
     except IndexError:
         return about_page_handler(update, context)
     if user.lang == "uz":
@@ -49,7 +45,7 @@ def information_handler_for_each_doctor(update: Update, context: CallbackContext
             )
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-    
+
     elif user.lang == "ru":
         try:
             doctor = Doctor.objects.get(last_name_ru=doctor_name.title())
@@ -61,6 +57,7 @@ def information_handler_for_each_doctor(update: Update, context: CallbackContext
             return about_page_handler(update, context)
 
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
+
 
 def handler_for_each_doctor(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
@@ -75,7 +72,7 @@ def handler_for_each_doctor(update: Update, context: CallbackContext):
             update.message.reply_text(
                 f"Доктор {doctor.last_name_ru.title()}",
                 reply_markup=keyboard
-        )
+            )
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
     elif user.lang == "uz":
@@ -88,8 +85,9 @@ def handler_for_each_doctor(update: Update, context: CallbackContext):
             )
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-    
+
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
+
 
 def doctor_info_and_social_account_handler(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
@@ -113,6 +111,7 @@ def doctor_info_and_social_account_handler(update: Update, context: CallbackCont
 
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
 
+
 def doctor_info_handler(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     if user.lang == "uz":
@@ -125,7 +124,7 @@ def doctor_info_handler(update: Update, context: CallbackContext):
             )
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-    
+
     elif user.lang == "ru":
         try:
             doctor = Doctor.objects.get(last_name_ru=doctor_name.title())
@@ -138,6 +137,7 @@ def doctor_info_handler(update: Update, context: CallbackContext):
             return about_page_handler(update, context)
 
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
+
 
 def doctor_social_account_handler(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
@@ -152,7 +152,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="YouTube",
                                 url=doctor.youtube_uz
-                            ) if doctor.youtube_uz else 
+                            ) if doctor.youtube_uz else
                             InlineKeyboardButton(
                                 text="YouTube",
                                 callback_data="Not found"
@@ -162,7 +162,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Instagram",
                                 url=doctor.instagram_uz
-                            ) if doctor.instagram_uz else 
+                            ) if doctor.instagram_uz else
                             InlineKeyboardButton(
                                 text="Instagram",
                                 callback_data="Not found"
@@ -172,7 +172,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Facebook",
                                 url=doctor.facebook_uz
-                            ) if doctor.facebook_uz else 
+                            ) if doctor.facebook_uz else
                             InlineKeyboardButton(
                                 text="Facebook",
                                 callback_data="Not found"
@@ -182,7 +182,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Twitter",
                                 url=doctor.twitter_uz
-                            ) if doctor.twitter_uz else 
+                            ) if doctor.twitter_uz else
                             InlineKeyboardButton(
                                 text="Twitter",
                                 callback_data="Not found"
@@ -192,7 +192,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Telegram",
                                 url=doctor.telegram_uz
-                            ) if doctor.telegram_uz else 
+                            ) if doctor.telegram_uz else
                             InlineKeyboardButton(
                                 text="Telegram",
                                 callback_data="Not found",
@@ -206,7 +206,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
             return about_page_handler(update, context)
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-    
+
     elif user.lang == "ru":
         try:
             doctor = Doctor.objects.get(last_name_ru=doctor_name.title())
@@ -218,7 +218,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="YouTube",
                                 url=doctor.youtube_ru
-                            ) if doctor.youtube_ru else 
+                            ) if doctor.youtube_ru else
                             InlineKeyboardButton(
                                 text="YouTube",
                                 callback_data="Not found"
@@ -228,7 +228,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Instagram",
                                 url=doctor.instagram_ru
-                            ) if doctor.instagram_ru else 
+                            ) if doctor.instagram_ru else
                             InlineKeyboardButton(
                                 text="Instagram",
                                 callback_data="Not found"
@@ -238,7 +238,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Facebook",
                                 url=doctor.facebook_ru
-                            ) if doctor.facebook_ru else 
+                            ) if doctor.facebook_ru else
                             InlineKeyboardButton(
                                 text="Facebook",
                                 callback_data="Not found"
@@ -248,7 +248,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Twitter",
                                 url=doctor.twitter_ru
-                            ) if doctor.twitter_ru else 
+                            ) if doctor.twitter_ru else
                             InlineKeyboardButton(
                                 text="Twitter",
                                 callback_data="Not found"
@@ -258,7 +258,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text="Telegram",
                                 url=doctor.telegram_ru
-                            ) if doctor.telegram_ru else 
+                            ) if doctor.telegram_ru else
                             InlineKeyboardButton(
                                 text="Telegram",
                                 callback_data="Not found",
@@ -272,5 +272,5 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
             return about_page_handler(update, context)
         except Doctor.DoesNotExist:
             return about_page_handler(update, context)
-    
+
     return DOCTOR_INFO_AND_SOCIAL_BUTTON
