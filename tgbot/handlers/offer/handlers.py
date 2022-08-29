@@ -9,9 +9,7 @@ from tgbot.models import User
 from .keyboards import make_keyboard_for_offer_option_uz, make_keyboard_for_offer_option_ru
 
 OFFER, OFFER_RECEIVE = range(3, 5)
-offer_group_chat_id = "-1001799210747"
-cooperation_group_chat_id = "-1001799210747"
-question_group_chat_id = "-1001799210747"
+from core.settings import offer_group_chat_id, cooperation_group_chat_id, question_group_chat_id
 
 
 def offer_handler(update: Update, context: CallbackContext):

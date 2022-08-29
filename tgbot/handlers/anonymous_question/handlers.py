@@ -9,7 +9,7 @@ from . import keyboards
 
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(3)
 
-question_group_chat_id = "-1001799210747"
+from core.settings import question_group_chat_id
 
 
 def ask_anonym_question(update, context):

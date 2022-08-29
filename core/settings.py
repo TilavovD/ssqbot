@@ -174,6 +174,9 @@ TELEGRAM_LOGS_CHAT_ID = os.getenv("TELEGRAM_LOGS_CHAT_ID", default=None)
 
 # -----> CHAT_ID
 CHAT_ID = os.getenv("CHAT_ID")
+offer_group_chat_id = "-1001799210747"
+cooperation_group_chat_id = "-1001799210747"
+question_group_chat_id = "-1001799210747"
 
 # -----> SENTRY
 # import sentry_sdk
