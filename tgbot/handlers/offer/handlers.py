@@ -31,7 +31,7 @@ def offer_receiver(update: Update, context: CallbackContext):
     keyboard = make_keyboard_for_offer_option_uz()
     offer_id_text = static_text.offer_id_uz
     if u.lang == "ru":
-        text = static_text.offer_received_uz
+        text = static_text.offer_received_ru
         keyboard = make_keyboard_for_offer_option_ru()
         offer_id_text = static_text.offer_id_ru
     update.message.reply_text(text, reply_markup=keyboard)
@@ -48,7 +48,7 @@ def offer_receiver(update: Update, context: CallbackContext):
 
 def offer_and_cooperation_answer_handler(update: Update, context: CallbackContext):
     if update.message.reply_to_message and update.message.reply_to_message.from_user.is_bot:
-
+        obj = 0
         if update.message.reply_to_message.chat.id == int(offer_group_chat_id):
             obj = Offer.objects.filter(group_msg_id=update.message.reply_to_message.message_id).first()
             if obj:

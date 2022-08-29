@@ -7,7 +7,7 @@ from tgbot.models import User
 from .keyboards import make_keyboard_for_cooperation_uz, make_keyboard_for_cooperation_ru
 
 COOPERATION, COOPERATION_RECEIVE = range(5, 7)
-cooperation_group_chat_id = "-1001799210747"
+cooperation_group_chat_id = "-1001725414054"
 
 
 def cooperation_handler(update: Update, context: CallbackContext):

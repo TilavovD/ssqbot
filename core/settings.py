@@ -174,9 +174,25 @@ TELEGRAM_LOGS_CHAT_ID = os.getenv("TELEGRAM_LOGS_CHAT_ID", default=None)
 
 # -----> CHAT_ID
 CHAT_ID = os.getenv("CHAT_ID")
-offer_group_chat_id = "-1001799210747"
-cooperation_group_chat_id = "-1001799210747"
-question_group_chat_id = "-1001799210747"
+offer_group_chat_id = os.getenv("OFFER_GROUP_CHAT_ID")
+if offer_group_chat_id is None:
+    logging.error(
+        "Please provide OFFER_GROUP_CHAT_ID in .env file.\n"
+    )
+    sys.exit(1)
+cooperation_group_chat_id = os.getenv("COOPERATION_GROUP_CHAT_ID")
+if cooperation_group_chat_id is None:
+    logging.error(
+        "Please provide COOPERATION_GROUP_CHAT_ID in .env file.\n"
+    )
+    sys.exit(1)
+question_group_chat_id = os.getenv("QUESTION_GROUP_CHAT_ID")
+if question_group_chat_id is None:
+    logging.error(
+        "Please provide QUESTION_GROUP_CHAT_ID in .env file.\n"
+    )
+    sys.exit(1)
+
 
 # -----> SENTRY
 # import sentry_sdk
