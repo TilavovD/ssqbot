@@ -7,18 +7,26 @@ from .static_text import (BACK_RU, MENU_RU, BACK_UZ, MENU_UZ,
 CONTROL_BUTTONS_UZ = [BACK_UZ, MENU_UZ]
 CONTROL_BUTTONS_RU = [BACK_RU, MENU_RU]
 
-categories = Category.objects.all()
 
 
 # Uzbek ReplyKeyboardMarkup
 
 def category_keyboard_uz():
     """ Returns the menu of categories available in Uzbek"""
+    categories = Category.objects.all()
+    keyboard = []
+    row = []
+    for index,category in  enumerate(categories):
+        row.append(category.title_uz)
+        if index %2 ==0:
+            keyboard.append(row)
+    
+    if len(categories)%2 !=0:
+        keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
+    
+    keyboard.append(category)
     return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(category.title_uz) for category in categories],
-            [KeyboardButton(button) for button in CONTROL_BUTTONS_UZ],
-        ],
+        keyboard=keyboard,
         resize_keyboard=True,
         input_field_placeholder=CATEGORY_TEXT_UZ
     )
@@ -27,40 +35,64 @@ def category_keyboard_uz():
 def condition_keyboard_uz(callback_data):
     """Returns the available conditions in Uzbek relevant to the category chosen"""
     conditions = Condition.objects.filter(category__title_uz=callback_data)
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(condition.title_uz) for condition in conditions],
-            [KeyboardButton(button) for button in CONTROL_BUTTONS_UZ],
-        ],
-        resize_keyboard=True,
-        input_field_placeholder=CONDITION_TEXT_UZ
 
+    keyboard = []
+    row = []
+    for index,condition in  enumerate(conditions):
+        row.append(condition.title_uz)
+        if index %2 ==0:
+            keyboard.append(row)
+    
+    if len(conditions)%2 !=0:
+        keyboard.append(  [KeyboardButton(button) for button in CONTROL_BUTTONS_RU],)
+        
+    return ReplyKeyboardMarkup(
+        keyboard=keyboard,
+        resize_keyboard=True,
+        input_field_placeholder=CONDITION_TEXT_RU
     )
+
 
 
 # Russian ReplyKeyboardMarkup 
 
 def category_keyboard_ru():
     """ Returns the menu of categories available in Russian"""
+    categories = Category.objects.all()
 
+    keyboard = []
+    row = []
+    for index,category in  enumerate(categories):
+        row.append(category.title_ru)
+        if index %2 ==0:
+            keyboard.append(row)
+    
+    if len(categories)%2 !=0:
+        keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
+    
+    keyboard.append(category)
     return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(category.title_ru) for category in categories],
-            [KeyboardButton(button) for button in CONTROL_BUTTONS_RU],
-        ],
+        keyboard=keyboard,
         resize_keyboard=True,
-        input_field_placeholder=CATEGORY_TEXT_RU
+        input_field_placeholder=CATEGORY_TEXT_UZ
     )
-
 
 def condition_keyboard_ru(callback_data):
     """Returns the available conditions in Russian relevant to the category chosen"""
     conditions = Condition.objects.filter(category__title_ru=callback_data)
+
+    keyboard = []
+    row = []
+    for index,condition in  enumerate(conditions):
+        row.append(condition.title_ru)
+        if index %2 ==0:
+            keyboard.append(row)
+    
+    if len(conditions)%2 !=0:
+        keyboard.append(  [KeyboardButton(button) for button in CONTROL_BUTTONS_RU],)
+        
     return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(condition.title_ru) for condition in conditions],
-            [KeyboardButton(button) for button in CONTROL_BUTTONS_RU],
-        ],
+        keyboard=keyboard,
         resize_keyboard=True,
         input_field_placeholder=CONDITION_TEXT_RU
     )
