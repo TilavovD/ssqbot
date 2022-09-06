@@ -17,7 +17,7 @@ def category_keyboard_uz():
     keyboard = []
     row = []
     for index,category in  enumerate(categories):
-        row.append(category.title_uz)
+        row.append(KeyboardButton(category.title_uz))
         if index %2 ==0:
             keyboard.append(row)
     
@@ -39,7 +39,7 @@ def condition_keyboard_uz(callback_data):
     keyboard = []
     row = []
     for index,condition in  enumerate(conditions):
-        row.append(condition.title_uz)
+        row.append(KeyboardButton(condition.title_uz))
         if index %2 ==0:
             keyboard.append(row)
     
@@ -63,7 +63,7 @@ def category_keyboard_ru():
     keyboard = []
     row = []
     for index,category in  enumerate(categories):
-        row.append(category.title_ru)
+        row.append(KeyboardButton(category.title_ru))
         if index %2 ==0:
             keyboard.append(row)
     
@@ -84,7 +84,7 @@ def condition_keyboard_ru(callback_data):
     keyboard = []
     row = []
     for index,condition in  enumerate(conditions):
-        row.append(condition.title_ru)
+        row.append(KeyboardButton(condition.title_ru))
         if index %2 ==0:
             keyboard.append(row)
     
