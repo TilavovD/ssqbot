@@ -16,13 +16,13 @@ def about_page_handler(update: Update, context: CallbackContext):
     if user.lang == "ru":
         keyboard = keyboards.make_keyboard_for_about_page_ru(doctors)
         update.message.reply_text(
-            "Выберите доктора, чтобы узнать больше о нем",
+            "Выберите одного из врачей, чтобы узнать больше о врачах",
             reply_markup=keyboard
         )
     elif user.lang == "uz":
         keyboard = keyboards.make_keyboard_for_about_page_uz(doctors)
         update.message.reply_text(
-            "Doktorlardan birini tanlang, shu doktor haqida ko'proq ma'lumot olish uchun",
+            "Doktorlar haqida ko'proq ma'lumot olish uchun doktorlardan birini tanlang",
             reply_markup=keyboard
         )
 
