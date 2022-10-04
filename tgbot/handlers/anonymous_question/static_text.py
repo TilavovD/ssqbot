@@ -16,16 +16,16 @@ write_question_text_ru = "Напишите и отправьте свой воп
 question_received_uz = "Savolingiz qabul qilindi"
 question_received_ru = "Ваш вопрос принят"
 
-requlations_uz = '1. Qoida #1 qwertyuiopasdfghjklzxcvbnm\
-    \n2. Qoida #2 qwertyuiopasdfghjklzxcvbnm\
-    \n3. Qoida #3 qwertyuiopasdfghjklzxcvbnmn\
-    \n4. Qoida #4 qwertyuiopasdfghjklzxcvbnm'
+requlations_uz = '1. Jinsingiz va yoshingiz\
+    \n2. Uylanganmisiz yoki turmushga chiqqanmisiz?\
+    \n3. Bo\'yingiz va vazningiz\
+    \n4. Shikoyat yoki savolingizni to'liq batafsil yozing.'
 
 
-requlations_ru = '1. Правила #1 qwertyuiopasdfghjklzxcvbnm\
-    \n2. Правила #2 qwertyuiopasdfghjklzxcvbnm\
-    \n3. Правила #3 qwertyuiopasdfghjklzxcvbnmn\
-    \n4. Правила #4 qwertyuiopasdfghjklzxcvbnm'
+requlations_ru = '1. Ваш пол и возраст\
+    \n2. Вы женаты или женаты?\
+    \n3. Ваш рост и вес\
+    \n4. Подробно напишите свою жалобу или вопрос.'
 
 question_id_uz = "Savolingiz uchun id: {}"
 question_id_ru = "Идентификатор вашего вопроса: {}"
