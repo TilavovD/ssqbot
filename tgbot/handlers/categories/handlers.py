@@ -28,7 +28,7 @@ def category(update: Update, context: CallbackContext):
     if user.lang == "ru":
         text = CATEGORY_TEXT_RU
         keyboard = category_keyboard_ru()
-
+    print(keyboard)
     update.message.reply_text(text, reply_markup=keyboard)
     return CONDITION
 
