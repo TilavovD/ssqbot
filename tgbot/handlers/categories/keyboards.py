@@ -28,7 +28,6 @@ def category_keyboard_uz():
     return ReplyKeyboardMarkup(
         keyboard=keyboard,
         resize_keyboard=True,
-        input_field_placeholder=CATEGORY_TEXT_UZ
     )
 
 
