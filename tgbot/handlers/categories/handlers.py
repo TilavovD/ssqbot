@@ -7,11 +7,11 @@ from tgbot.handlers.categories.inline_keyboards import inline_keyboard
 from tgbot.models import User
 
 from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU,
-                          CONDITION_TEXT_RU, CONDITION_TEXT_UZ)
+                          CONDITION_TEXT_RU, CONDITION_TEXT_UZ, MESSAGE_TEXT_RU, MESSAGE_TEXT_UZ)
 from .keyboards import (category_keyboard_uz, category_keyboard_ru,
-                        condition_keyboard_uz, condition_keyboard_ru)
+                        condition_keyboard_uz, condition_keyboard_ru, message_keyboard_ru, message_keyboard_uz)
 
-CONDITION, QUESTION = range(2)
+CONDITION, QUESTION, RESULT = range(3)
 
 results = 0
 clicks = 0
@@ -38,7 +38,7 @@ def condition(update: Update, context: CallbackContext):
     data = update.message.text
     user = User.get_user(update, context)
     text = CONDITION_TEXT_UZ
-    
+
     keyboard = condition_keyboard_uz(callback_data=data)
 
     if user.lang == "ru":
@@ -55,52 +55,69 @@ def result_calculator(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat.id
     data = query.data[6:]
-    subresult= int(data)
+    subresult = int(data)
     message = query.message.message_id
-    global results, clicks 
-    clicks +=1
+    global results, clicks
+    clicks += 1
     results += subresult
     context.bot.delete_message(chat_id, message)
 
-    if clicks==number_of_questions:
+    if clicks == number_of_questions:
         text = ""
         for result_object in Result.objects.filter(condition__title_uz=condition):
             if results in range(result_object.min_score, result_object.max_score+1):
 
                 if user.lang == "ru":
                     text = result_object.title_ru
-                
+
                 text = result_object.title_uz
                 context.bot.send_message(chat_id, text=f"{results}\n{text}")
                 return ConversationHandler.END
-        
-    
+
+
 def question(update: Update, context: CallbackContext):
     """The Questions handler for the conditon chosen in the previous step"""
     data = update.message.text
     global condition, number_of_questions
     condition = data
-    number_of_questions = Question.objects.filter(Q(condition__title_uz=data) | \
-                            Q(condition__title_ru=data)).count()
+    number_of_questions = Question.objects.filter(Q(condition__title_uz=data) |
+                                                  Q(condition__title_ru=data)).count()
 
     user = User.get_user(update, context)
     if user.lang == "ru":
-        questions = Question.objects.filter(condition__title_ru=data)
-        for question in questions:
-            answers = Answer.objects.filter(question__id=question.id)
-            keyboard = InlineKeyboardMarkup(
-                inline_keyboard=[[InlineKeyboardButton(text=answer.title_ru,
-                                                       callback_data="score-{answer.score}")] for answer in answers])
-            update.message.reply_text(text=question.title_ru, reply_markup=keyboard)
-            if update.callback_query is not None:
-                result_calculator(update, context)
+        question = Question.objects.filter(condition__title_ru=data)
+        if len(question):
+            context.user_data["question"] = question[0].id
+            keyboard = message_keyboard_ru()
+            update.message.reply_text(
+                text=f"{question[0].title_ru}\n\n{MESSAGE_TEXT_RU}", reply_markup=keyboard)
+            # if update.callback_query is not None:
+            #     result_calculator(update, context)
+            return RESULT
     else:
-        questions = Question.objects.filter(condition__title_uz=data)
-        for question in questions:
-            answers = Answer.objects.filter(question__id=question.id)
-            keyboard = InlineKeyboardMarkup(
-                inline_keyboard=[[InlineKeyboardButton(text=answer.title_uz,
-                                                       callback_data=f"score-{answer.score}"), ] for answer in answers])
-            update.message.reply_text(text=question.title_uz, reply_markup=keyboard)
-            if update.callback_query is not None:
-                result_calculator(update, context)
+        question = Question.objects.filter(condition__title_uz=data)
+        if len(question):
+            context.user_data["question"] = question[0].id
+
+            keyboard = message_keyboard_uz()
+            update.message.reply_text(
+                text=f"{question[0].title_uz}\n\n{MESSAGE_TEXT_UZ}", reply_markup=keyboard)
+            return RESULT
+
+
+def result(update: Update, context: CallbackContext):
+    """The Questions handler for the conditon chosen in the previous step"""
+    data = update.message.text
+
+    user = User.get_user(update, context)
+    question = Question.objects.get(id=context.user_data["question"])
+    answer = question.answer
+    if user.lang == "ru":
+        text = answer.title_ru
+    else:
+        text = answer.title_uz
+
+    keyboard = message_keyboard_uz()
+    update.message.reply_text(
+        text=text, reply_markup=keyboard)
+    return RESULT

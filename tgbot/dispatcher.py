@@ -48,10 +48,12 @@ from tgbot.handlers.video_info import handlers as video_info_handlers
 from tgbot.handlers.video_info import static_text as video_info_static_text
 
 ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, \
-    COOPERATION, COOPERATION_RECEIVE, ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(9)
+    COOPERATION, COOPERATION_RECEIVE, ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(
+        9)
 
-CONDITION, QUESTION = range(2)
-ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(3)
+CONDITION, QUESTION, RESULT = range(3)
+ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(
+    3)
 
 # video info section
 VIDEO_INFO, EACH_DOCTOR = range(2)
@@ -64,8 +66,10 @@ def setup_dispatcher(dp):
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler("start", untill_menu_handlers.command_start),
-            MessageHandler(Filters.text(untill_menu_static_text.UZBEK), untill_menu_handlers.language_choice),
-            MessageHandler(Filters.text(untill_menu_static_text.RUSSIAN), untill_menu_handlers.language_choice),
+            MessageHandler(Filters.text(untill_menu_static_text.UZBEK),
+                           untill_menu_handlers.language_choice),
+            MessageHandler(Filters.text(untill_menu_static_text.RUSSIAN),
+                           untill_menu_handlers.language_choice),
         ],
         states={
             ENTER_NAME: [
@@ -188,8 +192,10 @@ def setup_dispatcher(dp):
     """A conversation handler for the categories app"""
     category_conv_handler = ConversationHandler(
         entry_points=[
-            MessageHandler(Filters.text(untill_menu_static_text.categories_uz), category_handlers.category),
-            MessageHandler(Filters.text(untill_menu_static_text.categories_ru), category_handlers.category),
+            MessageHandler(Filters.text(
+                untill_menu_static_text.categories_uz), category_handlers.category),
+            MessageHandler(Filters.text(
+                untill_menu_static_text.categories_ru), category_handlers.category),
 
         ],
         states={
@@ -202,17 +208,34 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(category_static_text.MENU_RU),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.condition),
+                MessageHandler(Filters.text & ~Filters.command,
+                               category_handlers.condition),
 
             ],
             QUESTION: [
-                MessageHandler(Filters.text(category_static_text.BACK_UZ), category_handlers.category),
-                MessageHandler(Filters.text(category_static_text.BACK_RU), category_handlers.category),
-                MessageHandler(Filters.text(category_static_text.MENU_UZ), untill_menu_handlers.menu),
-                MessageHandler(Filters.text(category_static_text.MENU_RU), untill_menu_handlers.menu),
-                MessageHandler(Filters.text & ~Filters.command, category_handlers.question),
+                MessageHandler(Filters.text(
+                    category_static_text.BACK_UZ), category_handlers.category),
+                MessageHandler(Filters.text(
+                    category_static_text.BACK_RU), category_handlers.category),
+                MessageHandler(Filters.text(
+                    category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                               category_handlers.question),
             ],
-
+            RESULT: [
+                MessageHandler(Filters.text(
+                    category_static_text.BACK_UZ), category_handlers.category),
+                MessageHandler(Filters.text(
+                    category_static_text.BACK_RU), category_handlers.category),
+                MessageHandler(Filters.text(
+                    category_static_text.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    category_static_text.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text & ~Filters.command,
+                               category_handlers.result),
+            ],
         },
         fallbacks=[],
         allow_reentry=True,
@@ -238,16 +261,20 @@ def setup_dispatcher(dp):
                                untill_menu_handlers.menu),
                 MessageHandler(Filters.text(anonym_question_static.BACK_RU),
                                untill_menu_handlers.menu),
-                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
-                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_RU), untill_menu_handlers.menu),
             ],
             ANONYM_QUESTION_RECIEVE: [
                 MessageHandler(Filters.text(anonym_question_static.BACK_UZ),
                                anonym_question_handlers.send_anonym_question),
                 MessageHandler(Filters.text(anonym_question_static.BACK_RU),
                                anonym_question_handlers.send_anonym_question),
-                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
-                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_RU), untill_menu_handlers.menu),
                 MessageHandler(Filters.text & ~Filters.command,
                                anonym_question_handlers.question_reciever),
             ],
@@ -256,8 +283,10 @@ def setup_dispatcher(dp):
                                anonym_question_handlers.send_anonym_question),
                 MessageHandler(Filters.text(anonym_question_static.BACK_RU),
                                anonym_question_handlers.send_anonym_question),
-                MessageHandler(Filters.text(anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
-                MessageHandler(Filters.text(anonym_question_static.MENU_RU), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_UZ), untill_menu_handlers.menu),
+                MessageHandler(Filters.text(
+                    anonym_question_static.MENU_RU), untill_menu_handlers.menu),
             ]
 
         },
@@ -308,7 +337,8 @@ def setup_dispatcher(dp):
     dp.add_handler(category_conv_handler)
     dp.add_handler(video_info_conv_handler)
     dp.add_handler(anonym_question_conv_handler)
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, offer_handlers.offer_and_cooperation_answer_handler))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command,
+                   offer_handlers.offer_and_cooperation_answer_handler))
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
@@ -320,7 +350,8 @@ def setup_dispatcher(dp):
     # dp.add_handler(MessageHandler(Filters.location, location_handlers.location_handler))
     #
     # # secret level
-    dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
+    dp.add_handler(CallbackQueryHandler(
+        onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
     #
     # # broadcast message
     # dp.add_handler(
@@ -328,7 +359,8 @@ def setup_dispatcher(dp):
     #                    broadcast_handlers.broadcast_command_with_message)
     # )
     dp.add_handler(
-        CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler, pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
+        CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler,
+                             pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
     )
     #
     # # files
@@ -423,4 +455,5 @@ def set_up_commands(bot_instance: Bot) -> None:
 set_up_commands(bot)
 
 n_workers = 0 if DEBUG else 4
-dispatcher = setup_dispatcher(Dispatcher(bot, update_queue=None, workers=n_workers, use_context=True))
+dispatcher = setup_dispatcher(Dispatcher(
+    bot, update_queue=None, workers=n_workers, use_context=True))
