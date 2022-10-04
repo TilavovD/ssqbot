@@ -17,7 +17,7 @@ def category_keyboard_uz():
     row = []
     for index, category in enumerate(categories):
         row.append(KeyboardButton(category.title_uz))
-        if index % 2 == 0:
+        if index % 2 == 0 and index !=0:
             keyboard.append(row)
             row = []
 
@@ -39,12 +39,12 @@ def condition_keyboard_uz(callback_data):
     row = []
     for index, condition in enumerate(conditions):
         row.append(KeyboardButton(condition.title_uz))
-        if index % 2 == 0:
+        if index % 2 == 0 and index !=0:
             keyboard.append(row)
             row = []
 
     if len(conditions) % 2 != 0:
-        keyboard.append(KeyboardButton(condition.title_uz))
+        keyboard.append([KeyboardButton(condition.title_uz)])
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
@@ -76,12 +76,12 @@ def category_keyboard_ru():
     row = []
     for index, category in enumerate(categories):
         row.append(KeyboardButton(category.title_ru))
-        if index % 2 == 0:
+        if index % 2 == 0  and index !=0:
             keyboard.append(row)
             row = []
 
     if len(categories) % 2 != 0:
-        keyboard.append(KeyboardButton(category.title_ru))
+        keyboard.append([KeyboardButton(category.title_ru)])
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
@@ -99,12 +99,12 @@ def condition_keyboard_ru(callback_data):
     row = []
     for index, condition in enumerate(conditions):
         row.append(KeyboardButton(condition.title_ru))
-        if index % 2 == 0:
+        if index % 2 == 0  and index !=0:
             keyboard.append(row)
             row = []
 
     if len(conditions) % 2 != 0:
-        keyboard.append(KeyboardButton(condition.title_ru))
+        keyboard.append([KeyboardButton(condition.title_ru)])
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
