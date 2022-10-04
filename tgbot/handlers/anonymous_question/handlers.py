@@ -1,3 +1,4 @@
+from core.settings import question_group_chat_id
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ConversationHandler
 import requests
@@ -7,9 +8,8 @@ from common.models import AnonymousQuestion
 from . import static_text
 from . import keyboards
 
-ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(3)
-
-from core.settings import question_group_chat_id
+ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(
+    12, 15)
 
 
 def ask_anonym_question(update, context):
@@ -58,7 +58,8 @@ def question_reciever(update, context):
                                                   message_id=update.message.message_id)
     question_obj.group_msg_id = forward_message.message_id
 
-    update.message.reply_text(question_id_text.format(forward_message.message_id))
+    update.message.reply_text(
+        question_id_text.format(forward_message.message_id))
 
     question_obj.save()
     return ANONYM_QUESTION_RECIEVE_AFTER

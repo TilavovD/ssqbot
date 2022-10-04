@@ -11,7 +11,7 @@ from .static_text import (CATEGORY_TEXT_UZ, CATEGORY_TEXT_RU,
 from .keyboards import (category_keyboard_uz, category_keyboard_ru,
                         condition_keyboard_uz, condition_keyboard_ru, message_keyboard_ru, message_keyboard_uz)
 
-CONDITION, QUESTION, RESULT = range(3)
+CONDITION, QUESTION, RESULT = range(9,12)
 
 results = 0
 clicks = 0

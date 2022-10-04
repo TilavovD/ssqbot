@@ -5,7 +5,7 @@ from about.models import Doctor
 from tgbot.handlers.video_info import keyboards
 
 
-VIDEO_INFO, EACH_DOCTOR = range(2)
+VIDEO_INFO, EACH_DOCTOR = range(15,17)
 
 
 def video_info_handler(update: Update, context: CallbackContext):
