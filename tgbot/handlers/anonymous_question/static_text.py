@@ -19,7 +19,7 @@ question_received_ru = "Ваш вопрос принят"
 requlations_uz = '1. Jinsingiz va yoshingiz\
     \n2. Uylanganmisiz yoki turmushga chiqqanmisiz?\
     \n3. Bo\'yingiz va vazningiz\
-    \n4. Shikoyat yoki savolingizni to'liq batafsil yozing.'
+    \n4. Shikoyat yoki savolingizni to\'liq batafsil yozing.'
 
 
 requlations_ru = '1. Ваш пол и возраст\
