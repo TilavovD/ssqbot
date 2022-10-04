@@ -22,7 +22,7 @@ def category_keyboard_uz():
             row = []
 
     if len(categories) % 2 != 0:
-        keyboard.append(KeyboardButton(category.title_uz))
+        keyboard.append([KeyboardButton(category.title_uz)])
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
     print(keyboard)
     return ReplyKeyboardMarkup(
