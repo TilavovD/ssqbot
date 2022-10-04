@@ -22,7 +22,7 @@ def category_keyboard_uz():
             row = []
 
     if len(categories) % 2 != 0:
-        keyboard.append([KeyboardButton(category.title_uz)])
+        keyboard.append(row)
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
     print(keyboard)
     return ReplyKeyboardMarkup(
@@ -44,7 +44,7 @@ def condition_keyboard_uz(callback_data):
             row = []
 
     if len(conditions) % 2 != 0:
-        keyboard.append([KeyboardButton(condition.title_uz)])
+        keyboard.append(row)
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
@@ -81,7 +81,7 @@ def category_keyboard_ru():
             row = []
 
     if len(categories) % 2 != 0:
-        keyboard.append([KeyboardButton(category.title_ru)])
+        keyboard.append(row)
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
@@ -104,7 +104,7 @@ def condition_keyboard_ru(callback_data):
             row = []
 
     if len(conditions) % 2 != 0:
-        keyboard.append([KeyboardButton(condition.title_ru)])
+        keyboard.append(row)
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
 
     return ReplyKeyboardMarkup(
