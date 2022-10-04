@@ -120,4 +120,4 @@ def result(update: Update, context: CallbackContext):
     keyboard = message_keyboard_uz()
     update.message.reply_text(
         text=text, reply_markup=keyboard)
-    return RESULT
+    return ConversationHandler.END
