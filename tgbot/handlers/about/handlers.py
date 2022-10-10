@@ -153,50 +153,35 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                                 text="YouTube",
                                 url=doctor.youtube_uz
                             ) if doctor.youtube_uz else
-                            InlineKeyboardButton(
-                                text="YouTube",
-                                callback_data="Not found"
-                            )
+                            ""
                         ],
                         [
                             InlineKeyboardButton(
                                 text="Instagram",
                                 url=doctor.instagram_uz
                             ) if doctor.instagram_uz else
-                            InlineKeyboardButton(
-                                text="Instagram",
-                                callback_data="Not found"
-                            ),
+                            ""
                         ],
                         [
                             InlineKeyboardButton(
                                 text="Facebook",
                                 url=doctor.facebook_uz
                             ) if doctor.facebook_uz else
-                            InlineKeyboardButton(
-                                text="Facebook",
-                                callback_data="Not found"
-                            ),
+                            "",
                         ],
                         [
                             InlineKeyboardButton(
                                 text="Twitter",
                                 url=doctor.twitter_uz
                             ) if doctor.twitter_uz else
-                            InlineKeyboardButton(
-                                text="Twitter",
-                                callback_data="Not found"
-                            ),
+                            "",
                         ],
                         [
                             InlineKeyboardButton(
                                 text="Telegram",
                                 url=doctor.telegram_uz
                             ) if doctor.telegram_uz else
-                            InlineKeyboardButton(
-                                text="Telegram",
-                                callback_data="Not found",
-                            ),
+                            "",
                         ],
                     ]
                 ),
@@ -219,10 +204,7 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
                                 text="YouTube",
                                 url=doctor.youtube_ru
                             ) if doctor.youtube_ru else
-                            InlineKeyboardButton(
-                                text="YouTube",
-                                callback_data="Not found"
-                            )
+                            ""
                         ],
                         [
                             InlineKeyboardButton(
