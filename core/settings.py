@@ -30,7 +30,6 @@ else:
 ALLOWED_HOSTS = ["*", ]  # since Telegram uses a lot of IPs for webhooks
 
 INSTALLED_APPS = [
-    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'django_celery_beat',
     'debug_toolbar',
+    'modeltranslation',
 
     # local apps
     'tgbot',
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -72,8 +72,6 @@ INTERNAL_IPS = [
 ]
 
 # CORS
-CORS_ALLOW_METHODS = ["*"]
-CORS_ALLOW_HEADERS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'core.urls'
@@ -95,7 +93,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-ASGI_APPLICATION = 'core.asgi.application'
+# ASGI_APPLICATION = 'core.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
