@@ -74,6 +74,7 @@ INTERNAL_IPS = [
 # CORS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = ['https://*.uicgroup.tech']
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
