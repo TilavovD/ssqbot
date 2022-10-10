@@ -33,7 +33,8 @@ def information_handler_for_each_doctor(update: Update, context: CallbackContext
     user = User.get_user(update, context)
     global doctor_name
     try:
-        doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
+        doctor_name = update.message.text.strip().split(
+            " ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
     except IndexError:
         return about_page_handler(update, context)
     if user.lang == "uz":
@@ -62,7 +63,8 @@ def information_handler_for_each_doctor(update: Update, context: CallbackContext
 def handler_for_each_doctor(update: Update, context: CallbackContext):
     user = User.get_user(update, context)
     try:
-        doctor_name = update.message.text.strip().split(" ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
+        doctor_name = update.message.text.strip().split(
+            " ")[1].replace("👨‍⚕️", "").replace("👩‍⚕️", "")
     except IndexError:
         return about_page_handler(update, context)
     if user.lang == "ru":
@@ -144,46 +146,39 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
     if user.lang == "uz":
         try:
             doctor = Doctor.objects.get(last_name_uz=doctor_name.title())
+            keyboards = []
+            if doctor.youtube_uz:
+                keyboards.append([InlineKeyboardButton(
+                    text="YouTube",
+                    url=doctor.youtube_uz
+                )])
+            if doctor.instagram_uz:
+                keyboards.append([
+                    InlineKeyboardButton(
+                        text="Instagram",
+                        url=doctor.instagram_uz
+                    )
+                ])
+            if doctor.facebook_uz:
+                keyboards.append([
+                    InlineKeyboardButton(
+                        text="Facebook",
+                        url=doctor.facebook_uz
+                    )
+                ])
+            if doctor.telegram_uz:
+                keyboards.append([
+
+                    InlineKeyboardButton(
+                        text="Telegram",
+                        url=doctor.telegram_uz
+                    )
+                ])
+
             update.message.reply_text(
                 text=f"<b>Doktor {doctor.last_name_uz.title()}ning ijtimoiy tarmoqlari:</b>",
                 reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                text="YouTube",
-                                url=doctor.youtube_uz
-                            ) if doctor.youtube_uz else
-                            ""
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Instagram",
-                                url=doctor.instagram_uz
-                            ) if doctor.instagram_uz else
-                            ""
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Facebook",
-                                url=doctor.facebook_uz
-                            ) if doctor.facebook_uz else
-                            "",
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Twitter",
-                                url=doctor.twitter_uz
-                            ) if doctor.twitter_uz else
-                            "",
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Telegram",
-                                url=doctor.telegram_uz
-                            ) if doctor.telegram_uz else
-                            "",
-                        ],
-                    ]
+                    keyboards
                 ),
                 parse_mode=ParseMode.HTML,
             )
@@ -195,59 +190,38 @@ def doctor_social_account_handler(update: Update, context: CallbackContext):
     elif user.lang == "ru":
         try:
             doctor = Doctor.objects.get(last_name_ru=doctor_name.title())
+            keyboards = []
+            if doctor.youtube_ru:
+                keyboards.append([InlineKeyboardButton(
+                    text="YouTube",
+                    url=doctor.youtube_ru
+                )])
+            if doctor.instagram_ru:
+                keyboards.append([
+                    InlineKeyboardButton(
+                        text="Instagram",
+                        url=doctor.instagram_ru
+                    )
+                ])
+            if doctor.facebook_ru:
+                keyboards.append([
+                    InlineKeyboardButton(
+                        text="Facebook",
+                        url=doctor.facebook_ru
+                    )
+                ])
+            if doctor.telegram_ru:
+                keyboards.append([
+
+                    InlineKeyboardButton(
+                        text="Telegram",
+                        url=doctor.telegram_ru
+                    )
+                ])
             update.message.reply_text(
                 text=f"<b>Социальные сети доктора {doctor.last_name_ru.title()}:</b>",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                text="YouTube",
-                                url=doctor.youtube_ru
-                            ) if doctor.youtube_ru else
-                            ""
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Instagram",
-                                url=doctor.instagram_ru
-                            ) if doctor.instagram_ru else
-                            InlineKeyboardButton(
-                                text="Instagram",
-                                callback_data="Not found"
-                            ),
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Facebook",
-                                url=doctor.facebook_ru
-                            ) if doctor.facebook_ru else
-                            InlineKeyboardButton(
-                                text="Facebook",
-                                callback_data="Not found"
-                            ),
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Twitter",
-                                url=doctor.twitter_ru
-                            ) if doctor.twitter_ru else
-                            InlineKeyboardButton(
-                                text="Twitter",
-                                callback_data="Not found"
-                            ),
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                text="Telegram",
-                                url=doctor.telegram_ru
-                            ) if doctor.telegram_ru else
-                            InlineKeyboardButton(
-                                text="Telegram",
-                                callback_data="Not found",
-                            ),
-                        ],
-                    ]
-                ),
+                reply_markup=InlineKeyboardMarkup(keyboards
+                                                  ),
                 parse_mode=ParseMode.HTML,
             )
         except IndexError:
