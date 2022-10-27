@@ -185,8 +185,14 @@ def setup_dispatcher(dp):
             ],
 
         },
-        fallbacks=[],
-        allow_reentry=True
+        fallbacks=[
+            
+              CommandHandler("start", untill_menu_handlers.command_start),
+            MessageHandler(Filters.text(untill_menu_static_text.UZBEK),
+                           untill_menu_handlers.language_choice),
+            MessageHandler(Filters.text(untill_menu_static_text.RUSSIAN),
+                           untill_menu_handlers.language_choice),
+            ],
     )
 
     """A conversation handler for the categories app"""
@@ -251,8 +257,7 @@ def setup_dispatcher(dp):
             MessageHandler(Filters.text(
                 category_static_text.MENU_RU), untill_menu_handlers.menu),
         ],
-        allow_reentry=True,
-        run_async=True
+        
     )
 
     """A conversation handler for the anonymous question app"""
@@ -307,8 +312,7 @@ def setup_dispatcher(dp):
                                   anonym_question_handlers.ask_anonym_question),
                    MessageHandler(Filters.text(untill_menu_static_text.anonymous_ask_ru),
                                   anonym_question_handlers.ask_anonym_question), ],
-        allow_reentry=True,
-        run_async=True
+        
     )
 
     video_info_conv_handler = ConversationHandler(
@@ -348,8 +352,7 @@ def setup_dispatcher(dp):
                            video_info_handlers.video_info_handler),
             MessageHandler(Filters.text(untill_menu_static_text.video_info_ru),
                            video_info_handlers.video_info_handler),],
-        allow_reentry=True,
-        run_async=True
+ 
     )
 
     dp.add_handler(conv_handler)
