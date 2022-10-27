@@ -51,12 +51,12 @@ ENTER_NAME, ENTER_PHONE_NUMBER, MENU, OFFER, OFFER_RECEIVE, \
     COOPERATION, COOPERATION_RECEIVE, ABOUT_DOCTOR, DOCTOR_INFO_AND_SOCIAL_BUTTON = range(
         9)
 
-CONDITION, QUESTION, RESULT = range(9,12)
+CONDITION, QUESTION, RESULT = range(9, 12)
 ANONYM_QUESTION, ANONYM_QUESTION_RECIEVE, ANONYM_QUESTION_RECIEVE_AFTER = range(
-    12,15)
+    12, 15)
 
 # video info section
-VIDEO_INFO, EACH_DOCTOR = range(15,17)
+VIDEO_INFO, EACH_DOCTOR = range(15, 17)
 
 
 def setup_dispatcher(dp):
@@ -237,7 +237,20 @@ def setup_dispatcher(dp):
                                category_handlers.result),
             ],
         },
-        fallbacks=[],
+        fallbacks=[
+            MessageHandler(Filters.text(
+                untill_menu_static_text.categories_uz), category_handlers.category),
+            MessageHandler(Filters.text(
+                untill_menu_static_text.categories_ru), category_handlers.category),
+            MessageHandler(Filters.text(category_static_text.BACK_UZ),
+                           untill_menu_handlers.menu),
+            MessageHandler(Filters.text(category_static_text.BACK_RU),
+                           untill_menu_handlers.menu),
+            MessageHandler(Filters.text(
+                category_static_text.MENU_UZ), untill_menu_handlers.menu),
+            MessageHandler(Filters.text(
+                category_static_text.MENU_RU), untill_menu_handlers.menu),
+        ],
         allow_reentry=True,
         run_async=True
     )
@@ -290,7 +303,10 @@ def setup_dispatcher(dp):
             ]
 
         },
-        fallbacks=[],
+        fallbacks=[MessageHandler(Filters.text(untill_menu_static_text.anonymous_ask_uz),
+                                  anonym_question_handlers.ask_anonym_question),
+                   MessageHandler(Filters.text(untill_menu_static_text.anonymous_ask_ru),
+                                  anonym_question_handlers.ask_anonym_question), ],
         allow_reentry=True,
         run_async=True
     )
@@ -328,7 +344,10 @@ def setup_dispatcher(dp):
                                video_info_handlers.handler_for_each_doctor_youtube),
             ],
         },
-        fallbacks=[],
+        fallbacks=[ MessageHandler(Filters.text(untill_menu_static_text.video_info_uz),
+                           video_info_handlers.video_info_handler),
+            MessageHandler(Filters.text(untill_menu_static_text.video_info_ru),
+                           video_info_handlers.video_info_handler),],
         allow_reentry=True,
         run_async=True
     )
@@ -414,7 +433,7 @@ except telegram.error.Unauthorized:
     sys.exit(1)
 
 
-@app.task(ignore_result=True)
+@ app.task(ignore_result=True)
 def process_telegram_event(update_json):
     update = Update.de_json(update_json, bot)
     dispatcher.process_update(update)
