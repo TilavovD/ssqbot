@@ -52,7 +52,7 @@ def question_reciever(update, context):
         text = static_text.question_received_ru
         keyboard = keyboards.make_keyboard_for_question_recieved_ru()
         question_id_text = static_text.question_id_ru
-    update.message.reply_text(text, reply_markup=keyboard)
+    update.message.reply_html(text, reply_markup=keyboard)
     context.bot.send_message(chat_id=question_group_chat_id, text="#savol")
     forward_message = context.bot.forward_message(chat_id=question_group_chat_id, from_chat_id=update.message.chat_id,
                                                   message_id=update.message.message_id)
