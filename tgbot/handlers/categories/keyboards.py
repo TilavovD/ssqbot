@@ -24,7 +24,6 @@ def category_keyboard_uz():
     if len(categories) % 2 != 0:
         keyboard.append(row)
     keyboard.append([KeyboardButton(button) for button in CONTROL_BUTTONS_UZ])
-    print(keyboard)
     return ReplyKeyboardMarkup(
         keyboard=keyboard,
         resize_keyboard=True,
